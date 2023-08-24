@@ -14,7 +14,6 @@ export default {
             itemsPerPage: 10,
             currentPage: 1,
             items: [
-
             ],
             id: null,
             open: "",
@@ -51,7 +50,6 @@ export default {
                 .catch(function (error) {
                     console.log(error)
                 })
-
         },
         changeMainT() {
             const selectedMain = this.mainC.find(data => data.mainId === this.mainI);

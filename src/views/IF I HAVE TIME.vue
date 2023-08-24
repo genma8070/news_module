@@ -1,3 +1,26 @@
+<!-- 暇があればなんかできそう用ファイル -->
+<!-- 今は無視してください -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 import Pagination from '../components/Pagination.vue';
 import Result from '../components/Result_Front.vue';

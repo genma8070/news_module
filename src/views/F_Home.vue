@@ -1,0 +1,326 @@
+<script>
+import Pagination from '../components/Pagination.vue';
+import Result from '../components/Result_Front.vue';
+export default {
+    components: {
+        Pagination,
+        Result
+    },
+
+    data() {
+        return {
+            vh: 0,
+            contentCount: 10,
+            itemsPerPage: 10,
+            currentPage: 1,
+            items: [
+
+            ],
+            id: [
+
+            ],
+            title: "",
+            startTime: "",
+            endTime: "",
+            mainC: [],
+            subC: [],
+            text: "",
+            mainI: "",
+            subI: "",
+            mainT: '',
+            subT: "",
+            isSearch: true
+        }
+    },
+    methods: {
+        getMain() {
+            fetch("http://localhost:8080/find_mainC", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    this.mainC = data.list2;
+                    // console.log(this.mainI)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+
+        },
+        getSub() {
+            let body = {
+                "fatherId": this.mainI,
+            }
+            fetch("http://localhost:8080/find_subC", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body)
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    this.subC = data.list
+                    this.subI = ""
+                    // console.log(this.mainT)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+
+        },
+        changeMainT() {
+            const selectedMain = this.mainC.find(data => data.mainId === this.mainI);
+            if (selectedMain) {
+                this.mainT = selectedMain.mainTitle;
+            } else {
+                this.mainT = ''; // 清空 mainT 如果没有选中的主分类
+            }
+            // console.log(this.mainT)
+        },
+        mainMove() {
+            this.subI = null
+            this.getSub();
+            this.changeMainT();
+            this.goSearch();
+        },
+        handlePageChanged(page) {
+            // 處理分頁切換的邏輯
+            this.currentPage = page;
+            this.find()
+            // 更新相應的內容
+        },
+        handlePageChangedS(page) {
+            this.currentPage = page;
+            this.search()
+        },
+        find() {
+            let body = {
+                "index": (this.currentPage - 1) * 10
+            }
+
+            fetch("http://localhost:8080/get_all_f", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    // console.log(data)
+                    this.contentCount = data.list.length
+                    fetch("http://localhost:8080/find_all_news_f", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(body)
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            this.items = data.list
+                            this.isSearch = false
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                        })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        },
+        goSearch(){
+            this.currentPage = 1;
+            this.search();
+        },
+        search() {
+            let body = {
+                "title": this.title,
+                "startDate": this.startTime,
+                "endTDate": this.endTime,
+                "mainCategory": this.mainI,
+                "subCategory": this.subI,
+            }
+            fetch("http://localhost:8080/search_news_f_A", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body)
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.message) {
+                        window.alert(data.message)
+                        this.mainI = ""
+                        this.subI = ""
+                        this.find()
+                    }
+                    this.isSearch = true
+                    this.contentCount = data.list.length
+                    let body = {
+                        "title": this.title,
+                        "startDate": this.startTime,
+                        "endDate": this.endTime,
+                        "mainCategory": this.mainI,
+                        "subCategory": this.subI,
+                        "index": (this.currentPage - 1) * 10
+                    }
+                    fetch("http://localhost:8080/search_news_f", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(body)
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            // console.log(this.startTime)
+                            this.items = data.list
+                            // this.contentCount = data.list.length;
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                        })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        },
+       
+
+    },
+    mounted() {
+        this.getMain();
+        this.find()
+        // 設定高度
+        this.vh = document.documentElement.scrollHeight - 72 - 85;
+        document.getElementById("wrap").style.height = this.vh.toString() + "px";
+
+    }
+}
+</script>
+<template>
+    <div id="wrap" class="d-flex flex-column mb-4 mt-2">
+        <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
+            <div class="row d-flex flex-column mx-3 my-2">
+                <div class="col d-flex">
+                    <h4>標題關鍵字:</h4>
+                    <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
+                </div>
+                <div class="col d-flex">
+                    <h4>發布日期區間:</h4>
+                    <input v-model="startTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
+                    <input v-model="endTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
+                </div>
+                <div class="col d-flex">
+                    <h4>父分類:</h4>
+                    <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
+                        <option value="" selected>--請選擇父分類--</option>
+                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainTitle }}</option>
+                    </select>
+                    <h4 class="ms-1">子分類:</h4>
+                    <select v-show="mainI > 0" @change="goSearch" v-model="subI" style="height: 25px;" class="ms-2" name="sub"
+                        id="">
+                        <option value="" selected>--請選擇子分類--</option>
+                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-5">
+                <button class="float-btn" @click="goSearch" type="button">查詢</button>
+            </div>
+        </div>
+
+
+        <div class="Result">
+            <table class="table table-danger table-striped table-bordered border border-danger">
+                <thead>
+                    <tr>
+                        <th>分類1</th> <!-- 空白列 -->
+                        <th>分類2</th>
+                        <th>標題</th>
+                        <th>發布日期</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- 使用子元件並傳遞相關資料 -->
+                    <Result v-for="(property, index) in items" v-bind:key="property" v-bind:property="property"
+                        v-bind:index="index" />
+                </tbody>
+
+            </table>
+        </div>
+        <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
+            @page-changed="handlePageChanged" class="mx-auto page"></pagination>
+        <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
+            class="mx-auto page"></pagination>
+
+    </div>
+</template>
+<style lang="scss" scoped>
+.mid {
+    text-align: center;
+}
+
+.page {
+    margin-top: 200px;
+
+}
+
+.float-btn {
+    display: inline-block;
+    padding: 7px 15px;
+    background-color: #751bb2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+}
+
+.float-btn:hover {
+    background-color: #bd87c4;
+    transform: translateY(-5px);
+    /* 向上浮动效果 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 阴影效果 */
+}
+
+.float-btn:active {
+    background-color: #8a16ad;
+    transform: translateY(0);
+    /* 按下特效 */
+    box-shadow: none;
+    /* 按下时移除阴影 */
+}
+
+.Result {
+    justify-content: space-around;
+    text-align: center;
+    overflow: auto;
+    margin-top: 10px;
+    margin-bottom: -200px;
+    padding-top: 5px;
+
+    /* 自定義高度，根據需要調整 */
+}
+</style>

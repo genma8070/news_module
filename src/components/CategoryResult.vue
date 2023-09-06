@@ -2,48 +2,50 @@
 export default {
   props: [
     "property",
-    "index",
+    "index"
   ],
-  emits: ['fChange'],
+  emits: [
+    'getTarget',
+    'goTatget'
+  ],
   data() {
     return {
       ed: 0,
       nd: 0,
-      time:""
+      time: "",
+      name:""
 
     };
   },
   methods: {
+    getUrl(mainId) {
+      return '/category/update/' + mainId;
+    },
     getEditUrl(questionnaireId) {
-      return '/ans/' + questionnaireId;
+      return '/edit/' + questionnaireId;
     },
-    sendData(value) {
-      this.$emit('f-change', value);
-    }, 
-    getUrl(newsId) {
-      return '/Text/' + newsId;
+    sendId(property) {
+      this.$emit('goTarget', property);
     },
-    formatter() {
-      this.time = this.property.openDate.replace('T', ' ')
+    sendData(property) {
+      this.$emit('getTarget', property);
+      // console.log(property)
     }
-
+  
+  
   },
   mounted() {
-    this.ed = new Date(this.property.endTime).getTime()
-    this.nd = Date.now()
-    this.formatter()
+  
   }
-
-
 };
-</script>
+</script> 
 
 <template>
   <tr class="fw-bold">
-    <td>{{ property.mainCategoryName }}</td>
-    <td>{{ property.subCategoryName }}</td>
-    <td><a :href="getUrl(property.newsId)" class="aa">{{ property.title }}</a></td>
-    <td>{{ time }}</td>
+    <td v-if="property.news == 0"><input type="checkbox" name="news" @change="sendData(property)" :value="property"></td>
+    <td v-else></td>
+    <td>{{ property.mainTitle }}({{ property.news }})</td>
+    <td><a :href="getUrl(property.mainId)" class="btn btn-secondary">詳細</a></td>
   </tr>
 </template>
   
@@ -52,18 +54,15 @@ export default {
 .aa:link {
   //設定還沒有瀏覽過的連結
   text-decoration: none;
-  // background-color: #f841be;
+  background-color: #ffffff;
   color: black;
   border-radius: 5px;
-
 }
 
 .aa:hover {
   //設定滑鼠移經的連結
   text-decoration: none;
-  background-color: #eb6a86;
-  transition: 0.2s;
-  padding: 3px 5px;
+  background-color: #e18b8b;
   color: black;
   border-radius: 5px;
 
@@ -72,7 +71,7 @@ export default {
 .aa:active {
   //設定正在點選的連結
   text-decoration: none;
-  // background-color: rgb(255, 68, 68);
+  background-color: rgb(255, 68, 68);
   color: black;
   border-radius: 5px;
 
@@ -82,7 +81,7 @@ export default {
 .aa:visited {
   //設定還沒有瀏覽過的連結
   text-decoration: none;
-  // background-color: #ffffff;
+  background-color: #ffffff;
   color: black;
   border-radius: 5px;
 }

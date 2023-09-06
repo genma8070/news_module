@@ -15,15 +15,20 @@ export default {
             startTime: "",
             endTime: "",
             data: [],
-            now: Date.now()
+            now: Date.now(),
+            time: ""
+
         }
     },
     methods: {
+        formatter() {
+            this.time = (this.data.openDate).replace('T', ' ')
+        },
         get() {
             let body = {
                 "newsId": this.$route.params.Id
             }
-            fetch("http://localhost:8080/find_news_by_id", {
+            fetch("http://localhost:8080/find_full_news_by_id", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,16 +39,22 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    this.data = data.news;
+                    this.data = data;
+                    this.formatter()
+                    console.log(data)
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
-        }
+        },
+        getUrl(newsId) {
+            return '/updata/' + newsId;
+        },
 
     },
     mounted() {
         this.get();
+
         this.vh = document.documentElement.scrollHeight - 72 - 85;
         document.getElementById("wrap").style.height = this.vh.toString() + "px";
 
@@ -53,10 +64,33 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <HeaderView></HeaderView>
-        <h1 class="text-center">{{ data.title }}</h1>
-        <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
+        <div class="d-flex justify-content-around mt-2">
+            <a href="/" class="btn btn-secondary fw-bold mb-4">上一頁</a>
+            <h1 class="text-center">{{ data.title }}</h1>
+            <a class="btn  btn-secondary fw-bold mb-4" :href="getUrl(data.newsId)">更新</a>
+        </div>
+        <div class="d-flex justify-content-between my-n1 mt-n3 h5">
+            <div class="ms-5">
+
+            </div>
+            <div class="me-5 d-flex ">
+                <p> 主分類: {{ data.mainCategoryName }}</p>
+                <p class="ms-3"> 副分類: {{ data.subCategoryName }}</p>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between my-n2 mb-n3 h5">
+            <div class="ms-5">
+
+            </div>
+            <div class="me-5">
+                <p> 開放時間: {{ time }}</p>
+            </div>
+        </div>
+
+        <div class="d-flex h-100 mt-1 mx-5 border border-dark border-2 justify-content-center ">
+
             <div class="row d-flex flex-column mx-3 my-2">
-                <h1>{{ data.text }}</h1>
+                <p>{{ data.text }}</p>
             </div>
         </div>
 

@@ -5,6 +5,11 @@ import F_HomeView from "../views/F_Home.vue";
 import UpdataView from "../views/UpdataView.vue";
 import AddView from "../views/AddView.vue";
 import TextView from "../views/TextView.vue";
+import CategoryView from "../views/CategoryView.vue";
+import CategoryUpdateView from "../views/CategoryUpdateView.vue";
+import SubCategoryUpdateView from "../views/SubCategoryUpdateView.vue";
+import CategoryManagementView from "../views/CategoryManagementView.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +50,34 @@ const router = createRouter({
       path: '/f_home',
       name: 'f_home',
       component: F_HomeView,
+     
+    },
+    {
+      // ユーザーホーム画面
+      path: '/category',
+      name: 'category',
+      component: CategoryView,
+     
+    },{
+    
+      // ユーザーホーム画面
+      path: '/category/management',
+      name: 'categoryManagement',
+      component: CategoryManagementView,
+     
+    },{
+    
+      // ユーザーホーム画面
+      path: '/category/update/:Id',
+      name: 'CategoryUpdate',
+      component: CategoryUpdateView,
+     
+    },{
+    
+      // ユーザーホーム画面
+      path: '/subcategory/update/:Id',
+      name: 'SubCategoryUpdate',
+      component: SubCategoryUpdateView,
      
     },
   ]

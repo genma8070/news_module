@@ -28,7 +28,9 @@ export default {
             mainT: '',
             subT: "",
             isSearch: true,
-            deleteId: []
+            deleteId:[],
+            mainValue: "",
+            subValue: ""
 
         }
     },
@@ -43,15 +45,15 @@ export default {
             }
             console.log(this.deleteId)
         },
-        subMove(subI) {
-            this.subC.forEach(element => {
-                if (element.subId == subI) {
-                    this.mainI = element.mainId;
-                    this.findSub(subI);
-                    this.goSearch();
-                }
-                return
-            });
+        subMove(subI){
+           this.subC.forEach(element => {
+            if(element.subId == subI){
+                this.mainI=element.fatherId;
+                this.findSub(subI);
+                this.goSearch();
+            }
+            return
+           });
         },
         getMain() {
             fetch("http://localhost:8080/find_mainC", {
@@ -103,7 +105,7 @@ export default {
         },
         findSub(subI) {
             let body = {
-                "mainId": this.mainI,
+                "fatherId": this.mainI,
             }
             fetch("http://localhost:8080/find_subC", {
                 method: "POST",
@@ -176,7 +178,7 @@ export default {
                     console.log(error)
                 })
         },
-        goSearch() {
+        goSearch(){
             this.currentPage = 1;
             this.search();
         },
@@ -201,7 +203,7 @@ export default {
                 .then((data) => {
                     this.isSearch = true
                     this.contentCount = data.list.length
-
+                    
                     let body = {
                         "title": this.title,
                         "startDate": this.startTime,
@@ -233,21 +235,21 @@ export default {
                 })
         },
         mainMove() {
-            this.subI = ""
+            this.subI = null
             this.findSub();
             this.changeMainT();
             this.goSearch();
         },
         add() {
-            this.$router.push("/add/a");
+            this.$router.push("/category/management");
         },
-        category() {
+        category(){
             this.$router.push("/category");
         },
         go(target) {
-            console.log(target)
-            this.$router.push(`/updata/${target.newsId}`);
-
+           console.log(target)
+                this.$router.push(`/updata/${target.newsId}`);
+            
         },
         openSelect() {
             let body = {
@@ -278,7 +280,7 @@ export default {
             let body = {
                 "list": this.deleteId,
             }
-            fetch("http://localhost:8080/hide", {
+            fetch("http://localhost:8080/delete", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -298,7 +300,13 @@ export default {
                     console.log(error)
                 })
 
-        }
+        },
+        // enter(value) {
+        //     // console.log(value)
+        //     this.$emit('getTarget', value);
+        //     this.id = value.newsId
+        //     this.open = value.open
+        // },
 
     },
     mounted() {
@@ -315,43 +323,32 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
         <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
-            <div class="row d-flex flex-column mx-3 my-2">
-                <div class="col d-flex">
-                    <h4>標題關鍵字:</h4>
-                    <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
-                </div>
-                <div class="col d-flex">
-                    <h4>發布日期區間:</h4>
-                    <input v-model="startTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
-                    <input v-model="endTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
-                </div>
+            <div class="row d-flex flex-column mt-4 me-2">
                 <div class="col d-flex">
                     <h4>父分類:</h4>
                     <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
                         <option value="" selected>--請選擇父分類--</option>
                         <option v-for="data in mainC" :value="data.mainId">{{ data.mainTitle }}({{ data.news }})</option>
                     </select>
-                    <h4 class="ms-1">子分類:</h4>
-                    <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
+                    <h4 class="ms-2">子分類:</h4>
+                    <select  @change="subMove(subI)"  v-model="subI" style="height: 25px;" class="ms-2" name="sub"
+                        id="">
                         <option value="" selected>--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}({{ subData.news }})
-                        </option>
+                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}({{ subData.news }})</option>
                     </select>
                 </div>
             </div>
             <div class="mt-5">
-                <button class="float-btn" @click="goSearch" type="button">查詢</button>
+                <a @click="goSearch" class=" mb-3 mt-n2 ms-3 btn btn-dark">新增</a>
             </div>
         </div>
 
         <div class="d-flex justify-content-between">
             <div class="mt-2">
-                <button @click="openSelect" class="ms-5" type="button">開放新聞</button>
-                <button @click="deleteSelect" class="ms-5" type="button">隱藏新聞</button>
+                <button @click="changeOpen" class="ms-5" type="button">刪除新聞</button>
             </div>
             <div class="mt-2 me-5">
-                <button @click="add" class="ms-5" type="button">新增新聞</button>
-                <button @click="category" class="ms-5" type="button">管理分類</button>
+                <button @click="add" class="ms-5" type="button">調整分類</button>
             </div>
         </div>
         <div class="Result">
@@ -370,8 +367,8 @@ export default {
 
                 <tbody>
                     <!-- 使用子元件並傳遞相關資料 -->
-                    <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go"
-                        v-bind:key="property" v-bind:property="property" v-bind:index="index" />
+                    <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go" v-bind:key="property"
+                        v-bind:property="property" v-bind:index="index" />
                 </tbody>
 
             </table>

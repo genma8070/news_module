@@ -29,69 +29,12 @@ export default {
             subI: "",
             mainT: '',
             subT: "",
-            isSearch: true
+            time: "",
+            sort:""
         }
     },
     methods: {
-        getMain() {
-            fetch("http://localhost:8080/find_mainC", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
 
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then((data) => {
-                    this.mainC = data.list2;
-                    // console.log(this.mainI)
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-
-        },
-        getSub() {
-            let body = {
-                "fatherId": this.mainI,
-            }
-            fetch("http://localhost:8080/find_subC", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body)
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then((data) => {
-                    this.subC = data.list
-                    this.subI = ""
-                    // console.log(this.mainT)
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-
-        },
-        changeMainT() {
-            const selectedMain = this.mainC.find(data => data.mainId === this.mainI);
-            if (selectedMain) {
-                this.mainT = selectedMain.mainTitle;
-            } else {
-                this.mainT = ''; // 清空 mainT 如果没有选中的主分类
-            }
-            // console.log(this.mainT)
-        },
-        mainMove() {
-            this.subI = null
-            this.getSub();
-            this.changeMainT();
-            this.goSearch();
-        },
         handlePageChanged(page) {
             // 處理分頁切換的邏輯
             this.currentPage = page;
@@ -131,7 +74,7 @@ export default {
                         })
                         .then((data) => {
                             this.items = data.list
-                            this.isSearch = false
+                            
                         })
                         .catch(function (error) {
                             console.log(error)
@@ -141,46 +84,24 @@ export default {
                     console.log(error)
                 })
         },
-        goSearch(){
-            this.currentPage = 1;
-            this.search();
-        },
-        search() {
+        findAsc() {
             let body = {
-                "title": this.title,
-                "startDate": this.startTime,
-                "endTDate": this.endTime,
-                "mainCategory": this.mainI,
-                "subCategory": this.subI,
+                "index": (this.currentPage - 1) * 10
             }
-            fetch("http://localhost:8080/search_news_f_A", {
-                method: "POST",
+
+            fetch("http://localhost:8080/get_all_f_a", {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(body)
             })
                 .then(function (response) {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.message) {
-                        window.alert(data.message)
-                        this.mainI = ""
-                        this.subI = ""
-                        this.find()
-                    }
-                    this.isSearch = true
+                    // console.log(data)
                     this.contentCount = data.list.length
-                    let body = {
-                        "title": this.title,
-                        "startDate": this.startTime,
-                        "endDate": this.endTime,
-                        "mainCategory": this.mainI,
-                        "subCategory": this.subI,
-                        "index": (this.currentPage - 1) * 10
-                    }
-                    fetch("http://localhost:8080/search_news_f", {
+                    fetch("http://localhost:8080/find_all_news_f_a", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -191,9 +112,8 @@ export default {
                             return response.json();
                         })
                         .then((data) => {
-                            // console.log(this.startTime)
                             this.items = data.list
-                            // this.contentCount = data.list.length;
+                            // console.log(data)
                         })
                         .catch(function (error) {
                             console.log(error)
@@ -203,12 +123,21 @@ export default {
                     console.log(error)
                 })
         },
-       
+        sortChange(){
+            if(this.sort){
+                this.find();
+            }else{
+                this.findAsc();
+            }
+        }
+
+
 
     },
     mounted() {
-        this.getMain();
+
         this.find()
+
         // 設定高度
         this.vh = document.documentElement.scrollHeight - 72 - 85;
         document.getElementById("wrap").style.height = this.vh.toString() + "px";
@@ -218,37 +147,13 @@ export default {
 </script>
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
-        <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
-            <div class="row d-flex flex-column mx-3 my-2">
-                <div class="col d-flex">
-                    <h4>標題關鍵字:</h4>
-                    <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
-                </div>
-                <div class="col d-flex">
-                    <h4>發布日期區間:</h4>
-                    <input v-model="startTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
-                    <input v-model="endTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
-                </div>
-                <div class="col d-flex">
-                    <h4>父分類:</h4>
-                    <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
-                        <option value="" selected>--請選擇父分類--</option>
-                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainTitle }}</option>
-                    </select>
-                    <h4 class="ms-1">子分類:</h4>
-                    <select v-show="mainI > 0" @change="goSearch" v-model="subI" style="height: 25px;" class="ms-2" name="sub"
-                        id="">
-                        <option value="" selected>--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="mt-5">
-                <button class="float-btn" @click="goSearch" type="button">查詢</button>
+        <div class="d-flex justify-content-between">
+            <div></div>
+            <div class="me-3">
+                <input @change="sortChange" v-model="sort" type="radio"  name="sort" :value="true" checked>新着順
+                <input @change="sortChange" v-model="sort" class="ms-2" type="radio"  name="sort" :value="false">古い順
             </div>
         </div>
-
-
         <div class="Result">
             <table class="table table-danger table-striped table-bordered border border-danger">
                 <thead>
@@ -268,9 +173,7 @@ export default {
 
             </table>
         </div>
-        <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-            @page-changed="handlePageChanged" class="mx-auto page"></pagination>
-        <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
+        <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
             class="mx-auto page"></pagination>
 
     </div>

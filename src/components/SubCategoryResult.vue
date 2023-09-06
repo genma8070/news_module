@@ -1,58 +1,50 @@
 <script>
 export default {
   props: [
-    "property",
+    "property2",
     "index"
   ],
   emits: [
-    'getTarget',
+    'getSubTarget',
     'goTatget'
   ],
   data() {
     return {
       ed: 0,
       nd: 0,
-      time: ""
+      time: "",
+      name:""
 
     };
   },
   methods: {
-    getUrl(newsId) {
-      return '/Text/' + newsId;
+    getUrl(subId) {
+      return '/subcategory/update/' + subId;
     },
     getEditUrl(questionnaireId) {
       return '/edit/' + questionnaireId;
     },
-    sendId(property) {
-      this.$emit('goTarget', property);
+    sendId(property2) {
+      this.$emit('goSubTarget', property2);
     },
-    sendData(property) {
-      this.$emit('getTarget', property);
+    sendSubData(property2) {
+      this.$emit('getSubTarget', property2);
       // console.log(property)
     },
-    formatter() {
-      this.time = this.property.openDate.replace('T', ' ')
-    }
+   
+  
   },
   mounted() {
-    // console.log(this.property)
-    this.ed = new Date(this.property.endTime).getTime()
-    this.nd = Date.now()
-    this.formatter()
   }
 };
 </script> 
 
 <template>
   <tr class="fw-bold">
-    <td><input type="checkbox" name="news" @change="sendData(property)" :value="property"></td>
-    <td>{{ property.mainCategoryName }}</td>
-    <td>{{ property.subCategoryName }}</td>
-    <td>{{ property.title }}</td>
-    <td>{{ time }}</td>
-    <td v-if="property.open">開放中</td>
-    <td v-else>隱藏中</td>
-    <td><a :href="getUrl(property.newsId)" class="btn btn-secondary">詳細</a></td>
+    <td v-if="property2.news == 0"><input type="checkbox" name="news" @change="sendSubData(property2)" :value="property2"></td>
+    <td v-else></td>
+    <td>{{ property2.subTitle }}({{ property2.news }})</td>
+    <td><a :href="getUrl(property2.subId)" class="btn btn-secondary">詳細</a></td>
   </tr>
 </template>
   

@@ -23,8 +23,19 @@ export default {
     },
     methods: {
         mainMove() {
-            this.subI = ""
-            this.getSub();
+            this.subI = null
+            this.findSub();
+            this.changeMainT();
+
+        },
+        subMove(subI) {
+            this.subC.forEach(element => {
+                if (element.subId == subI) {
+                    this.mainI = element.mainId;
+                    this.findSub(subI)
+                }
+                return
+            });
         },
         getMain() {
             fetch("http://localhost:8080/find_mainC", {
@@ -40,17 +51,14 @@ export default {
                 .then((data) => {
                     this.mainC = data.list2;
                     // console.log(this.mainI)
-                    this.get();
-
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
 
-        },
-        getSub() {
+        }, findSub(subI) {
             let body = {
-                "fatherId": this.mainI,
+                "mainId": this.mainI,
             }
             fetch("http://localhost:8080/find_subC", {
                 method: "POST",
@@ -64,13 +72,45 @@ export default {
                 })
                 .then((data) => {
                     this.subC = data.list
-                    this.subI = ""
+                    if (subI != null) {
+                        this.subI = subI
+                    } else {
+                        this.subI = ""
+                    }
                     // console.log(this.mainI)
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
 
+        },
+        getSub() {
+            fetch("http://localhost:8080/get_subC", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    this.subC = data.list;
+                    // console.log(data)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }, changeMainT() {
+            const selectedMain = this.mainC.find(data => data.mainId === this.mainI);
+            if (selectedMain) {
+                this.mainT = selectedMain.mainTitle;
+            } else {
+                this.mainT = ''; // 清空 mainT 如果没有选中的主分类
+                this.getSub();
+            }
+            // console.log(this.mainT)
         },
         get() {
             let body = {
@@ -87,12 +127,14 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
+                    console.log(data)
                     this.data = data.news;
                     this.text = this.data.text;
                     this.title = this.data.title;
                     this.mainI = this.data.mainCategory;
+
                     this.subI = this.data.subCategory;
-                    this.getSub();
+                    this.getSub(this.subI);
 
                 })
                 .catch(function (error) {
@@ -124,14 +166,15 @@ export default {
                     console.log(error)
                 })
         },
-   
+
 
 
     },
     mounted() {
-        // this.get();
-        this.getMain();
 
+        this.getMain();
+        this.getSub()
+        this.get();
         this.vh = document.documentElement.scrollHeight - 72 - 85;
         document.getElementById("wrap").style.height = this.vh.toString() + "px";
 
@@ -158,8 +201,7 @@ export default {
                         <option v-for="data in mainC" :value="data.mainId">{{ data.mainTitle }}</option>
                     </select>
                     <h4 class="ms-1">子分類:</h4>
-                    <select v-show="mainI > 0" @change="search" v-model="subI" style="height: 25px;" class="ms-2" name="sub"
-                        id="">
+                    <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
                         <option value="" selected>--請選擇子分類--</option>
                         <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}</option>
                     </select>

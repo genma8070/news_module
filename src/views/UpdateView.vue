@@ -17,7 +17,19 @@ export default {
             text: "",
             mainI: "",
             mainT: "",
-            subI: ""
+            subI: "",
+            session: {
+
+                mainI: '',
+                subI: '',
+                title: '',
+                subTitle: '',
+                text: '',
+                openDate: '',
+                mainN: '',
+                subN: ''
+
+            }
 
         }
     },
@@ -131,8 +143,9 @@ export default {
                     this.data = data.news;
                     this.text = this.data.text;
                     this.title = this.data.title;
+                    this.subTitle = this.data.subTitle;
                     this.mainI = this.data.mainCategory;
-
+                    this.openDate = this.data.openDate
                     this.subI = this.data.subCategory;
                     this.getSub(this.subI);
 
@@ -141,7 +154,7 @@ export default {
                     console.log(error)
                 })
         },
-        updata() {
+        update() {
             let body = {
                 "newsId": this.$route.params.Id,
                 "mainCategory": this.mainI,
@@ -149,7 +162,7 @@ export default {
                 "title": this.title,
                 "text": this.text,
             }
-            fetch("http://localhost:8080/updata_news", {
+            fetch("http://localhost:8080/update_news", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -165,6 +178,33 @@ export default {
                 .catch(function (error) {
                     console.log(error)
                 })
+        }, getMainName(value) {
+            console.log(this.mainC)
+            const index = this.mainC.findIndex(i => i.mainId === value);
+            if (index !== -1) {
+                // console.log(this.mainC)
+                this.session.mainCategoryName = this.mainC[index].mainCategoryName;
+            }
+        }, getSubName(value) {
+            // console.log(value)
+            const index = this.subC.findIndex(i => i.subId === value);
+            if (index !== -1) {
+
+                this.session.subCategoryName = this.subC[index].subCategoryName;
+            }
+        },
+        updatePerview() {
+            this.session.title = this.title;
+            this.session.subTitle = this.subTitle;
+            this.session.mainI = this.mainI;
+            this.session.subI = this.subI;
+            this.session.subCategoryName = this.subCategoryName;
+            this.session.text = this.text;
+            this.session.openDate = this.openDate;
+            this.getMainName(this.mainI)
+            this.getSubName(this.subI)
+            sessionStorage.setItem("update", JSON.stringify(this.session));
+            this.$router.push('/perview/' +  this.$route.params.Id)
         },
 
 
@@ -185,10 +225,14 @@ export default {
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <h1 class="text-center mt-4">更新新聞</h1>
         <div class="d-flex mt-5 mx-5 border border-dark border-2 justify-content-center">
-            <div class="row d-flex flex-column mx-3 my-2">
+            <div class="row d-flex flex-column pt-2 mx-3 my-2">
                 <div class="col d-flex">
                     <h4>新聞標題:</h4>
                     <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
+                </div>
+                <div class="col d-flex">
+                    <h4>副標題:</h4>
+                    <input v-model="subTitle" style="height: 25px; width: 338px;" class="ms-2" type="text">
                 </div>
                 <div class="col d-flex">
                     <h4>新聞內容:</h4>
@@ -196,19 +240,25 @@ export default {
                 </div>
                 <div class="col d-flex">
                     <h4>父分類:</h4>
-                    <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
+                    <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main"
+                        id="">
                         <option value="" selected>--請選擇父分類--</option>
-                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainTitle }}</option>
+                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}</option>
                     </select>
                     <h4 class="ms-1">子分類:</h4>
                     <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
                         <option value="" selected>--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}</option>
+                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}</option>
                     </select>
+                </div>
+                <div class="col d-flex">
+                    <h4>預定開放時間(預設現在): </h4>
+                    <input type="datetime-local" v-model="openDate" v-on:change="p" class="ms-2 mt-1" style="height: 25px;"
+                        name="open" id="open">
                 </div>
             </div>
             <div class="mt-5">
-                <button @click="updata" type="button">更新</button>
+                <button @click="updatePerview" type="button">更新</button>
             </div>
         </div>
 

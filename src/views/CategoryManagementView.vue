@@ -101,7 +101,7 @@ export default {
         },
         findSub(subI) {
             let body = {
-                "fatherId": this.mainI,
+                "mainId": this.mainI,
             }
             fetch("http://localhost:8080/find_subC", {
                 method: "POST",

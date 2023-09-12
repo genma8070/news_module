@@ -44,7 +44,7 @@ export default {
   <tr class="fw-bold">
     <td v-if="property.news == 0"><input type="checkbox" name="news" @change="sendData(property)" :value="property"></td>
     <td v-else></td>
-    <td>{{ property.mainTitle }}({{ property.news }})</td>
+    <td>{{ property.mainCategoryName }}({{ property.news }})</td>
     <td><a :href="getUrl(property.mainId)" class="btn btn-secondary">詳細</a></td>
   </tr>
 </template>

@@ -38,7 +38,7 @@ export default {
                 })
                 .then((data) => {
                     console.log(data)
-                    this.title = data.sub.subTitle;
+                    this.title = data.sub.subCategoryName
                    
                 })
                 .catch(function (error) {
@@ -50,7 +50,7 @@ export default {
                 "subId": this.$route.params.Id,
                 "subTitle": this.title,
             }
-            fetch("http://localhost:8080/updata_news", {
+            fetch("http://localhost:8080/updata_subCategory", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

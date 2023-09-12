@@ -15,9 +15,22 @@ export default {
             subC: [],
             subC: "",
             text: "",
+            subTitle: '',
             mainI: "",
             subI: "",
-            openDate: ""
+            openDate: "",
+            session: {
+
+                mainI: '',
+                subI: '',
+                title: '',
+                subTitle: '',
+                text: '',
+                openDate: '',
+                mainN: '',
+                subN: ''
+
+            }
         }
     },
     methods: {
@@ -87,6 +100,8 @@ export default {
                 "mainCategory": this.mainI,
                 "subCategory": this.subI,
                 "title": this.title,
+                "subTitle": this.subTitle,
+                "subCategoryName": this.subCategoryName,
                 "text": this.text,
                 "openDate": this.openDate
             }
@@ -129,7 +144,7 @@ export default {
         }, changeMainT() {
             const selectedMain = this.mainC.find(data => data.mainId === this.mainI);
             if (selectedMain) {
-                this.mainT = selectedMain.mainTitle;
+                this.mainT = selectedMain.mainCategoryName;
             } else {
                 this.mainT = ''; // 清空 mainT 如果没有选中的主分类
                 this.getSub();
@@ -138,13 +153,54 @@ export default {
         },
         p() {
             console.log(this.openDate)
-        }
+        },
+        getMainName(value) {
+            console.log(this.mainC)
+            const index = this.mainC.findIndex(i => i.mainId === value);
+            if (index !== -1) {
+        // console.log(this.mainC)
+                this.session.mainCategoryName = this.mainC[index].mainCategoryName;
+            }
+        }, getSubName(value) {
+            // console.log(value)
+            const index = this.subC.findIndex(i => i.subId === value);
+            if (index !== -1) {
 
+                this.session.subCategoryName = this.subC[index].subCategoryName;
+            }
+        },
+        addPerview() {
+            this.session.title = this.title;
+            this.session.subTitle = this.subTitle;
+            this.session.mainI = this.mainI;
+            this.session.subI = this.subI;
+            this.session.subCategoryName = this.subCategoryName;
+            this.session.text = this.text;
+            this.session.openDate = this.openDate;
+            this.getMainName(this.mainI)
+            this.getSubName(this.subI)
+            sessionStorage.setItem("session", JSON.stringify(this.session));
+            this.$router.push('/perview/0')
+        },
+        cancel() {
+            this.session = JSON.parse(sessionStorage.getItem("session"));
+            this.title = this.session.title;
+            this.subTitle = this.session.subTitle;
+            this.mainI = this.session.mainI;
+            this.subI = this.session.subI;
+            this.text = this.session.text;
+            this.openDate = this.session.openDate;
+        }
 
     },
     mounted() {
         this.getMain();
-        this.getSub()
+        this.getSub();
+        if (sessionStorage.getItem("session") != null) {
+            
+            this.cancel()
+            // console.log(this.title)
+        }
         this.vh = document.documentElement.scrollHeight - 72 - 85;
         document.getElementById("wrap").style.height = this.vh.toString() + "px";
 
@@ -161,19 +217,24 @@ export default {
                     <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
                 </div>
                 <div class="col d-flex">
+                    <h4>副標題:</h4>
+                    <input v-model="subTitle" style="height: 25px; width: 338px;" class="ms-2" type="text">
+                </div>
+                <div class="col d-flex">
                     <h4>新聞內容:</h4>
                     <input v-model="text" style="height: 25px; width: 338px;" class="ms-2" type="text">
                 </div>
                 <div class="col d-flex">
                     <h4>父分類:</h4>
-                    <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
+                    <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main"
+                        id="">
                         <option value="" selected>--請選擇父分類--</option>
-                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainTitle }}</option>
+                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}</option>
                     </select>
                     <h4 class="ms-1">子分類:</h4>
                     <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
                         <option value="" selected>--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}</option>
+                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}</option>
                     </select>
                 </div>
                 <div class="col d-flex">
@@ -183,7 +244,7 @@ export default {
                 </div>
             </div>
             <div class="mt-5 ms-5 me-n3">
-                <a @click="addNews" class="ms-5 me-n5 mt-4 align-middle btn btn-dark">新增</a>
+                <a @click="addPerview" class="ms-5 me-n5 mt-4 align-middle btn btn-dark">新增</a>
             </div>
         </div>
 

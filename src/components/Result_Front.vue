@@ -21,7 +21,8 @@ export default {
       this.$emit('f-change', value);
     }, 
     getUrl(newsId) {
-      return '/Text/' + newsId;
+      this.$router.push('/Text/' + newsId)
+      // return '/Text/' + newsId;
     },
     formatter() {
       this.time = this.property.openDate.replace('T', ' ')
@@ -42,7 +43,13 @@ export default {
   <tr class="fw-bold">
     <td>{{ property.mainCategoryName }}</td>
     <td>{{ property.subCategoryName }}</td>
-    <td><a :href="getUrl(property.newsId)" class="aa">{{ property.title }}</a></td>
+    <!-- <td><a :href="getUrl(property.newsId)" class="aa">{{ property.title }}</a></td> -->
+    <td>
+      <div @click="getUrl(property.newsId)" class="d-flex flex-column btn">
+        <span class="h3">{{ property.title }}</span>
+        <span class="h5">{{ property.subTitle }}</span>
+      </div>
+    </td>
     <td>{{ time }}</td>
   </tr>
 </template>

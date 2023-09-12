@@ -30,7 +30,7 @@ export default {
             mainT: '',
             subT: "",
             time: "",
-            sort:""
+            sort: ""
         }
     },
     methods: {
@@ -41,13 +41,10 @@ export default {
             this.find()
             // 更新相應的內容
         },
-        handlePageChangedS(page) {
-            this.currentPage = page;
-            this.search()
-        },
         find() {
             let body = {
-                "index": (this.currentPage - 1) * 10
+                "index": (this.currentPage - 1) * this.itemsPerPage,
+                "items": this.itemsPerPage
             }
 
             fetch("http://localhost:8080/get_all_f", {
@@ -74,7 +71,7 @@ export default {
                         })
                         .then((data) => {
                             this.items = data.list
-                            
+
                         })
                         .catch(function (error) {
                             console.log(error)
@@ -86,7 +83,8 @@ export default {
         },
         findAsc() {
             let body = {
-                "index": (this.currentPage - 1) * 10
+                "index": (this.currentPage - 1) * this.itemsPerPage,
+                "items": this.itemsPerPage
             }
 
             fetch("http://localhost:8080/get_all_f_a", {
@@ -123,10 +121,10 @@ export default {
                     console.log(error)
                 })
         },
-        sortChange(){
-            if(this.sort){
+        sortChange() {
+            if (this.sort) {
                 this.find();
-            }else{
+            } else {
                 this.findAsc();
             }
         }
@@ -147,13 +145,6 @@ export default {
 </script>
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
-        <div class="d-flex justify-content-between">
-            <div></div>
-            <div class="me-3">
-                <input @change="sortChange" v-model="sort" type="radio"  name="sort" :value="true" checked>新着順
-                <input @change="sortChange" v-model="sort" class="ms-2" type="radio"  name="sort" :value="false">古い順
-            </div>
-        </div>
         <div class="Result">
             <table class="table table-danger table-striped table-bordered border border-danger">
                 <thead>

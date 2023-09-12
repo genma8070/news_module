@@ -11,6 +11,7 @@ export default {
         return {
             vh: 0,
             title: "",
+            subTitle:"",
             text: "",
             startTime: "",
             endTime: "",
@@ -48,10 +49,11 @@ export default {
                 })
         },
         getUrl(newsId) {
-            return '/updata/' + newsId;
+            return '/update/' + newsId;
         },
 
     },
+  
     mounted() {
         this.get();
 

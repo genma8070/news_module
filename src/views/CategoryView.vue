@@ -28,7 +28,7 @@ export default {
             mainT: '',
             subT: "",
             isSearch: true,
-            deleteId:[],
+            deleteId: [],
             mainValue: "",
             subValue: ""
 
@@ -45,15 +45,15 @@ export default {
             }
             console.log(this.deleteId)
         },
-        subMove(subI){
-           this.subC.forEach(element => {
-            if(element.subId == subI){
-                this.mainI=element.fatherId;
-                this.findSub(subI);
-                this.goSearch();
-            }
-            return
-           });
+        subMove(subI) {
+            this.subC.forEach(element => {
+                if (element.subId == subI) {
+                    this.mainI = element.mainId;
+                    this.findSub(subI);
+                    this.goSearch();
+                }
+                return
+            });
         },
         getMain() {
             fetch("http://localhost:8080/find_mainC", {
@@ -96,7 +96,7 @@ export default {
         changeMainT() {
             const selectedMain = this.mainC.find(data => data.mainId === this.mainI);
             if (selectedMain) {
-                this.mainT = selectedMain.mainTitle;
+                this.mainT = selectedMain.mainCategoryName;
             } else {
                 this.mainT = ''; // 清空 mainT 如果没有选中的主分类
                 this.getSub();
@@ -105,7 +105,7 @@ export default {
         },
         findSub(subI) {
             let body = {
-                "fatherId": this.mainI,
+                "mainId": this.mainI,
             }
             fetch("http://localhost:8080/find_subC", {
                 method: "POST",
@@ -141,7 +141,8 @@ export default {
         },
         find() {
             let body = {
-                "index": (this.currentPage - 1) * 10
+                "index": (this.currentPage - 1) * this.itemsPerPage,
+                "items": this.itemsPerPage
             }
 
             fetch("http://localhost:8080/get_all_b", {
@@ -178,7 +179,7 @@ export default {
                     console.log(error)
                 })
         },
-        goSearch(){
+        goSearch() {
             this.currentPage = 1;
             this.search();
         },
@@ -203,14 +204,15 @@ export default {
                 .then((data) => {
                     this.isSearch = true
                     this.contentCount = data.list.length
-                    
+
                     let body = {
                         "title": this.title,
                         "startDate": this.startTime,
                         "endDate": this.endTime,
                         "mainCategory": this.mainI,
                         "subCategory": this.subI,
-                        "index": (this.currentPage - 1) * 10
+                        "index": (this.currentPage - 1) * this.itemsPerPage,
+                        "items": this.itemsPerPage
                     }
                     fetch("http://localhost:8080/search_news_b", {
                         method: "POST",
@@ -243,13 +245,13 @@ export default {
         add() {
             this.$router.push("/category/management");
         },
-        category(){
+        category() {
             this.$router.push("/category");
         },
         go(target) {
-           console.log(target)
-                this.$router.push(`/updata/${target.newsId}`);
-            
+            console.log(target)
+            this.$router.push(`/update/${target.newsId}`);
+
         },
         openSelect() {
             let body = {
@@ -328,13 +330,14 @@ export default {
                     <h4>父分類:</h4>
                     <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
                         <option value="" selected>--請選擇父分類--</option>
-                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainTitle }}({{ data.news }})</option>
+                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
+                        </option>
                     </select>
                     <h4 class="ms-2">子分類:</h4>
-                    <select  @change="subMove(subI)"  v-model="subI" style="height: 25px;" class="ms-2" name="sub"
-                        id="">
+                    <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
                         <option value="" selected>--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subTitle }}({{ subData.news }})</option>
+                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}({{ subData.news
+                        }})</option>
                     </select>
                 </div>
             </div>
@@ -342,7 +345,22 @@ export default {
                 <a @click="goSearch" class=" mb-3 mt-n2 ms-3 btn btn-dark">新增</a>
             </div>
         </div>
-
+        <div class="d-flex justify-content-between mt-2 me-3">
+            <div></div>
+            <div class="me-3">
+                <label for="items">ページごとのニュース数：</label>
+                <select v-if="sort" @change="find" v-model="itemsPerPage" name="" id="items">
+                    <option value="10" selected>10</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <select v-else @change="findAsc" v-model="itemsPerPage" name="" id="items">
+                    <option value="10" selected>10</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
         <div class="d-flex justify-content-between">
             <div class="mt-2">
                 <button @click="changeOpen" class="ms-5" type="button">刪除新聞</button>
@@ -367,8 +385,8 @@ export default {
 
                 <tbody>
                     <!-- 使用子元件並傳遞相關資料 -->
-                    <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go" v-bind:key="property"
-                        v-bind:property="property" v-bind:index="index" />
+                    <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go"
+                        v-bind:key="property" v-bind:property="property" v-bind:index="index" />
                 </tbody>
 
             </table>

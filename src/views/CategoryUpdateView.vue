@@ -38,7 +38,7 @@ export default {
                 })
                 .then((data) => {
                     console.log(data)
-                    this.title = data.main.mainTitle;
+                    this.title = data.main.mainCategoryName;
                    
                 })
                 .catch(function (error) {

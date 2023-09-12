@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from "../views/Login.vue";
 import HomeView from "../views/Home.vue";
 import F_HomeView from "../views/F_Home.vue";
-import UpdataView from "../views/UpdataView.vue";
+import UpdateView from "../views/UpdateView.vue";
 import AddView from "../views/AddView.vue";
 import TextView from "../views/TextView.vue";
+import PerviewView from "../views/PerviewView.vue";
 import CategoryView from "../views/CategoryView.vue";
 import CategoryUpdateView from "../views/CategoryUpdateView.vue";
 import SubCategoryUpdateView from "../views/SubCategoryUpdateView.vue";
@@ -29,8 +30,8 @@ const router = createRouter({
     },
     {
       // ニュース追加画面
-      path: '/add/a',
-      name: 'a',
+      path: '/news/add',
+      name: 'add',
       component: AddView,
     },
     {
@@ -41,9 +42,9 @@ const router = createRouter({
     },
     {
       // ニュース更新画面
-      path: '/updata/:Id',
-      name: 'updata',
-      component: UpdataView,
+      path: '/update/:Id',
+      name: 'update',
+      component: UpdateView,
     },
     {
       // ユーザーホーム画面
@@ -72,12 +73,21 @@ const router = createRouter({
       name: 'CategoryUpdate',
       component: CategoryUpdateView,
      
-    },{
+    },
+    {
     
       // ユーザーホーム画面
       path: '/subcategory/update/:Id',
       name: 'SubCategoryUpdate',
       component: SubCategoryUpdateView,
+     
+    }, 
+    {
+    
+      // ユーザーホーム画面
+      path: '/perview/:Id',
+      name: 'Perview',
+      component: PerviewView,
      
     },
   ]

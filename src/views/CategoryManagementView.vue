@@ -59,8 +59,6 @@ export default {
             }
             console.log(this.deleteSubId)
         },
-
-
         getMain() {
             fetch("http://localhost:8080/find_mainC", {
                 method: "GET",
@@ -99,11 +97,14 @@ export default {
                     console.log(error)
                 })
         },
-        findSub(subI) {
+        backToLsit() {
+            this.$router.push('/category')
+        },
+        deleteMain() {
             let body = {
-                "mainId": this.mainI,
+                "deleteList": this.deleteId
             }
-            fetch("http://localhost:8080/find_subC", {
+            fetch("http://localhost:8080/delete_main", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -114,19 +115,36 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    this.subC = data.list
-                    if (subI != null) {
-                        this.subI = subI
-                    } else {
-                        this.subI = ""
-                    }
-                    // console.log(this.mainT)
+                    window.alert(data.message)
+                    this.getMain();
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
-
-        },
+        }
+        ,
+        deleteSub() {
+            let body = {
+                "deleteList": this.deleteSubId
+            }
+            fetch("http://localhost:8080/delete_sub", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body)
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    window.alert(data.message)
+                    this.getSub();
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
 
     },
     mounted() {
@@ -141,10 +159,19 @@ export default {
 </script>
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2 over-flow">
+
         <div class="d-flex justify-content-between">
-            <div></div>
-            <div><input type="button" class="btn btn-dark me-4 my-2" value="刪除"></div>
-            
+            <div class="d-flex justify-content-between w-50">
+
+                <div><input type="button" @click="backToLsit" class="btn btn-outline-info ms-4 my-2" value="回上一頁">
+                </div>
+                <div><input type="button" @click="deleteMain" class="btn btn-dark me-2 my-2" value="刪除主分類"></div>
+            </div>
+            <div class="d-flex justify-content-between w-50">
+                <p></p>
+                <div><input type="button" @click="deleteSub" class="btn btn-dark me-4 my-2" value="刪除子分類"></div>
+
+            </div>
         </div>
         <div class="d-flex">
             <div class="Result h-75 w-50">

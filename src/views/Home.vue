@@ -449,9 +449,9 @@ export default {
             </table>
         </div>
         <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-            @page-changed="handlePageChanged" class="mx-auto page"></pagination>
+            @page-changed="handlePageChanged" class="mx-auto mb-n5 page"></pagination>
         <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-            class="mx-auto page"></pagination>
+            class="mx-auto mb-n5 page"></pagination>
 
     </div>
 </template>

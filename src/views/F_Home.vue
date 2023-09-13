@@ -165,7 +165,7 @@ export default {
             </table>
         </div>
         <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-            class="mx-auto page"></pagination>
+            class="mx-auto mb-n5 page"></pagination>
 
     </div>
 </template>

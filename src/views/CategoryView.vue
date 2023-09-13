@@ -303,12 +303,12 @@ export default {
                 })
 
         },
-        // enter(value) {
-        //     // console.log(value)
-        //     this.$emit('getTarget', value);
-        //     this.id = value.newsId
-        //     this.open = value.open
-        // },
+        addCategory() {
+            this.$router.push('/category/add')
+        },
+        backToLsit() {
+            this.$router.push('/')
+        }
 
     },
     mounted() {
@@ -324,7 +324,13 @@ export default {
 </script>
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
+        <div class="d-flex justify-content-between">
+                <div><input type="button" @click="backToLsit" class="btn btn-outline-info ms-5 my-2" value="回上一頁">
+                </div>
+                <div></div>
+            </div>   
         <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
+         
             <div class="row d-flex flex-column mt-4 me-2">
                 <div class="col d-flex">
                     <h4>父分類:</h4>
@@ -342,7 +348,7 @@ export default {
                 </div>
             </div>
             <div class="mt-5">
-                <a @click="goSearch" class=" mb-3 mt-n2 ms-3 btn btn-dark">新增</a>
+                <a @click="addCategory" class=" mb-3 mt-n2 ms-3 btn btn-dark">新增</a>
             </div>
         </div>
         <div class="d-flex justify-content-between mt-2 me-3">
@@ -392,9 +398,9 @@ export default {
             </table>
         </div>
         <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-            @page-changed="handlePageChanged" class="mx-auto page"></pagination>
+            @page-changed="handlePageChanged" class="mx-auto mb-n5 page"></pagination>
         <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-            class="mx-auto page"></pagination>
+            class="mx-auto mb-n5 page"></pagination>
 
     </div>
 </template>

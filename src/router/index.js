@@ -10,6 +10,8 @@ import CategoryView from "../views/CategoryView.vue";
 import CategoryUpdateView from "../views/CategoryUpdateView.vue";
 import SubCategoryUpdateView from "../views/SubCategoryUpdateView.vue";
 import CategoryManagementView from "../views/CategoryManagementView.vue";
+import CategoryAddView from "../views/CategoryAddView.vue";
+
 
 
 const router = createRouter({
@@ -80,6 +82,14 @@ const router = createRouter({
       path: '/subcategory/update/:Id',
       name: 'SubCategoryUpdate',
       component: SubCategoryUpdateView,
+     
+    }, 
+    {
+    
+      // ユーザーホーム画面
+      path: '/category/add',
+      name: 'CategoryAddView',
+      component: CategoryAddView,
      
     }, 
     {

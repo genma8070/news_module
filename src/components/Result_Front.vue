@@ -21,7 +21,7 @@ export default {
       this.$emit('f-change', value);
     }, 
     getUrl(newsId) {
-      this.$router.push('/Text/' + newsId)
+      this.$router.push('user/text/' + newsId)
       // return '/Text/' + newsId;
     },
     formatter() {

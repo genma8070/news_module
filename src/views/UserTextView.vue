@@ -11,7 +11,7 @@ export default {
         return {
             vh: 0,
             title: "",
-            subTitle:"",
+            subTitle: "",
             text: "",
             startTime: "",
             endTime: "",
@@ -53,7 +53,7 @@ export default {
         },
 
     },
-  
+
     mounted() {
         this.get();
 
@@ -67,12 +67,13 @@ export default {
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <HeaderView></HeaderView>
         <div class="d-flex justify-content-around mt-2">
-            <a href="/" class="btn btn-secondary fw-bold mb-5 mt-4">上一頁</a>
-            <div class="d-flex flex-column text-center ms-n5">
+            <a href="/f_home" class="btn btn-secondary fw-bold me-3 mb-5 mt-4">上一頁</a>
+            <!-- <h1 class="text-center ms-n5">{{ data.title }}</h1> -->
+            <div class="d-flex flex-column text-center me-4 ms-n5">
                 <span class="h1">{{ data.title }}</span>
                 <span class="h3">{{ data.subTitle }}</span>
             </div>
-            <a class="btn  btn-secondary fw-bold mb-5 mt-4" :href="getUrl(data.newsId)">更新</a>
+            <div class="ml-5 me-5"></div>
         </div>
         <div class="d-flex justify-content-between my-n1 mt-n3 h5">
             <div class="ms-5">

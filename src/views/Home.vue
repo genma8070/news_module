@@ -144,7 +144,7 @@ export default {
                 "items": this.itemsPerPage
             }
 
-            fetch("http://localhost:8080/get_all_b", {
+            fetch("http://localhost:8080/get_all_b_desc", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -156,7 +156,7 @@ export default {
                 .then((data) => {
                     // console.log(data)
                     this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_b", {
+                    fetch("http://localhost:8080/find_all_news_b_desc", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -190,7 +190,8 @@ export default {
                 "mainCategory": this.mainI,
                 "subCategory": this.subI,
             }
-            fetch("http://localhost:8080/search_news_b_A", {
+            if(this.sort){
+            fetch("http://localhost:8080/search_news_b_A_desc", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -213,7 +214,7 @@ export default {
                         "index": (this.currentPage - 1) * this.itemsPerPage,
                         "items": this.itemsPerPage
                     }
-                    fetch("http://localhost:8080/search_news_b", {
+                    fetch("http://localhost:8080/search_news_b_desc", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -234,6 +235,54 @@ export default {
                 .catch(function (error) {
                     console.log(error)
                 })
+            }
+            else{
+                fetch("http://localhost:8080/search_news_b_A_asc", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body)
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    this.isSearch = true
+                    this.contentCount = data.list.length
+
+                    let body = {
+                        "title": this.title,
+                        "startDate": this.startTime,
+                        "endDate": this.endTime,
+                        "mainCategory": this.mainI,
+                        "subCategory": this.subI,
+                        "index": (this.currentPage - 1) * this.itemsPerPage,
+                        "items": this.itemsPerPage
+                    }
+                    fetch("http://localhost:8080/search_news_b_asc", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(body)
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            this.items = data.list
+                            // this.contentCount = data.list.length;
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                        })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+
+            }
         },
         mainMove() {
             this.subI = ""
@@ -303,11 +352,7 @@ export default {
 
         },
         sortChange() {
-            if (this.sort) {
-                this.find();
-            } else {
-                this.findAsc();
-            }
+          this.goSearch();
         },
         findAsc() {
             let body = {
@@ -315,7 +360,7 @@ export default {
                 "items": this.itemsPerPage
             }
 
-            fetch("http://localhost:8080/get_all_f_a", {
+            fetch("http://localhost:8080/get_all_b_asc", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -327,7 +372,7 @@ export default {
                 .then((data) => {
                     // console.log(data)
                     this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_f_a", {
+                    fetch("http://localhost:8080/find_all_news_b_asc", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -404,12 +449,7 @@ export default {
             <div></div>
             <div class="me-3">
                 <label for="items">ページごとのニュース数：</label>
-                <select v-if="sort" @change="find" v-model="itemsPerPage" name="" id="items">
-                    <option value="10" selected>10</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                <select v-else @change="findAsc" v-model="itemsPerPage" name="" id="items">
+                <select @change="goSearch" v-model="itemsPerPage" name="" id="items">
                     <option value="10" selected>10</option>
                     <option value="50">50</option>
                     <option value="100">100</option>

@@ -81,53 +81,53 @@ export default {
                     console.log(error)
                 })
         },
-        findAsc() {
-            let body = {
-                "index": (this.currentPage - 1) * this.itemsPerPage,
-                "items": this.itemsPerPage
-            }
+        // findAsc() {
+        //     let body = {
+        //         "index": (this.currentPage - 1) * this.itemsPerPage,
+        //         "items": this.itemsPerPage
+        //     }
 
-            fetch("http://localhost:8080/get_all_f_a", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then((data) => {
-                    // console.log(data)
-                    this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_f_a", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(body)
-                    })
-                        .then(function (response) {
-                            return response.json();
-                        })
-                        .then((data) => {
-                            this.items = data.list
-                            // console.log(data)
-                        })
-                        .catch(function (error) {
-                            console.log(error)
-                        })
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-        },
-        sortChange() {
-            if (this.sort) {
-                this.find();
-            } else {
-                this.findAsc();
-            }
-        }
+        //     fetch("http://localhost:8080/get_all_f_a", {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //     })
+        //         .then(function (response) {
+        //             return response.json();
+        //         })
+        //         .then((data) => {
+        //             // console.log(data)
+        //             this.contentCount = data.list.length
+        //             fetch("http://localhost:8080/find_all_news_f_a", {
+        //                 method: "POST",
+        //                 headers: {
+        //                     "Content-Type": "application/json",
+        //                 },
+        //                 body: JSON.stringify(body)
+        //             })
+        //                 .then(function (response) {
+        //                     return response.json();
+        //                 })
+        //                 .then((data) => {
+        //                     this.items = data.list
+        //                     // console.log(data)
+        //                 })
+        //                 .catch(function (error) {
+        //                     console.log(error)
+        //                 })
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error)
+        //         })
+        // },
+        // sortChange() {
+        //     if (this.sort) {
+        //         this.find();
+        //     } else {
+        //         this.findAsc();
+        //     }
+        // }
 
 
 

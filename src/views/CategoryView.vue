@@ -46,6 +46,10 @@ export default {
             console.log(this.deleteId)
         },
         subMove(subI) {
+            if(subI == ""){
+                this.goSearch();
+                return
+            }
             this.subC.forEach(element => {
                 if (element.subId == subI) {
                     this.mainI = element.mainId;
@@ -145,7 +149,7 @@ export default {
                 "items": this.itemsPerPage
             }
 
-            fetch("http://localhost:8080/get_all_b", {
+            fetch("http://localhost:8080/get_all_b_desc", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -157,7 +161,7 @@ export default {
                 .then((data) => {
                     // console.log(data)
                     this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_b", {
+                    fetch("http://localhost:8080/find_all_news_b_desc", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -191,7 +195,7 @@ export default {
                 "mainCategory": this.mainI,
                 "subCategory": this.subI,
             }
-            fetch("http://localhost:8080/search_news_b_A", {
+            fetch("http://localhost:8080/search_news_b_A_desc", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -214,7 +218,7 @@ export default {
                         "index": (this.currentPage - 1) * this.itemsPerPage,
                         "items": this.itemsPerPage
                     }
-                    fetch("http://localhost:8080/search_news_b", {
+                    fetch("http://localhost:8080/search_news_b_desc", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -340,9 +344,9 @@ export default {
                         </option>
                     </select>
                     <h4 class="ms-2">子分類:</h4>
-                    <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
-                        <option value="" selected>--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}({{ subData.news
+                    <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="sub">
+                        <option value="" selected id="sub">--請選擇子分類--</option>
+                        <option v-for="subData in subC" :value="subData.subId" id="sub">{{ subData.subCategoryName }}({{ subData.news
                         }})</option>
                     </select>
                 </div>
@@ -355,12 +359,7 @@ export default {
             <div></div>
             <div class="me-3">
                 <label for="items">ページごとのニュース数：</label>
-                <select v-if="sort" @change="find" v-model="itemsPerPage" name="" id="items">
-                    <option value="10" selected>10</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                <select v-else @change="findAsc" v-model="itemsPerPage" name="" id="items">
+                <select @change="find" v-model="itemsPerPage" name="" id="items">
                     <option value="10" selected>10</option>
                     <option value="50">50</option>
                     <option value="100">100</option>

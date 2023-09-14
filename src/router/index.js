@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from "../views/Login.vue";
 import HomeView from "../views/Home.vue";
 import F_HomeView from "../views/F_Home.vue";
 import UpdateView from "../views/UpdateView.vue";
 import AddView from "../views/AddView.vue";
 import TextView from "../views/TextView.vue";
+import UserTextView from "../views/UserTextView.vue";
 import PerviewView from "../views/PerviewView.vue";
 import CategoryView from "../views/CategoryView.vue";
 import CategoryUpdateView from "../views/CategoryUpdateView.vue";
@@ -41,6 +41,12 @@ const router = createRouter({
       path: '/text/:Id',
       name: 'text',
       component: TextView,
+    },
+    {
+      // ニュース詳細画面（雑）
+      path: '/user/text/:Id',
+      name: 'userText',
+      component: UserTextView,
     },
     {
       // ニュース更新画面

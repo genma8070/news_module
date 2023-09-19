@@ -185,7 +185,7 @@ export default {
                     console.log(error)
                 })
         }, getMainName(value) {
-            console.log(this.mainC)
+            // console.log(this.mainC)
             const index = this.mainC.findIndex(i => i.mainId === value);
             if (index !== -1) {
                 // console.log(this.mainC)

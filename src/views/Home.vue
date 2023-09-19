@@ -29,7 +29,8 @@ export default {
             subT: "",
             isSearch: true,
             deleteId: [],
-            sort: true
+            sort: true,
+            switcher: ''
 
         }
     },
@@ -42,7 +43,7 @@ export default {
             } else {
                 this.deleteId.push(value.newsId)
             }
-            console.log(this.deleteId)
+            // console.log(this.deleteId)
         },
         subMove(subI) {
             this.subC.forEach(element => {
@@ -162,7 +163,7 @@ export default {
                             window.alert(data.message)
                         }
                     }
-                    console.log(data)
+                    // console.log(data)
                     this.contentCount = data.list.length
                     fetch("http://localhost:8080/find_all_news", {
                         method: "POST",
@@ -266,15 +267,16 @@ export default {
             this.$router.push("/category");
         },
         go(target) {
-            console.log(target)
+            // console.log(target)
             this.$router.push(`/update/${target.newsId}`);
 
         },
-        openSelect() {
+        openHide() {
             let body = {
+                "sort": this.switcher,
                 "list": this.deleteId,
             }
-            fetch("http://localhost:8080/open", {
+            fetch("http://localhost:8080/open_or_hide", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -286,36 +288,6 @@ export default {
                 })
                 .then((data) => {
                     // console.log(data)
-                    if (data.messageType) {
-                        window.alert(data.message);
-                        this.deleteId = []
-                        // this.find();
-                    }
-                    else if (!data.messageType) {
-                        window.alert(data.message);
-                    }
-                    this.find();
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-
-        },
-        deleteSelect() {
-            let body = {
-                "list": this.deleteId,
-            }
-            fetch("http://localhost:8080/hide", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body)
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then((data) => {
                     if (data.messageType) {
                         window.alert(data.message);
                         this.deleteId = []
@@ -333,6 +305,14 @@ export default {
         sortChange() {
             this.goSearch();
         },
+        openNews(){
+            this.switcher = true;
+            this.openHide();
+        },
+        hideNews(){
+            this.switcher = false;
+            this.openHide();
+        }
 
     },
     mounted() {
@@ -399,8 +379,8 @@ export default {
         </div>
         <div class="d-flex justify-content-between">
             <div class="mt-2">
-                <button @click="openSelect" class="ms-5" type="button">開放新聞</button>
-                <button @click="deleteSelect" class="ms-5" type="button">隱藏新聞</button>
+                <button @click="openNews" class="ms-5" type="button">開放新聞</button>
+                <button @click="hideNews" class="ms-5" type="button">隱藏新聞</button>
             </div>
             <div class="mt-2 me-5">
                 <button @click="add" class="ms-5" type="button">新增新聞</button>

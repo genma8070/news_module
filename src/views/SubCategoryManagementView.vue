@@ -48,7 +48,7 @@ export default {
             } else {
                 this.deleteId.push(value.mainId)
             }
-            console.log(this.deleteId)
+            // console.log(this.deleteId)
         },
         getSubId(value) {
             // console.log(value)
@@ -58,7 +58,7 @@ export default {
             } else {
                 this.deleteSubId.push(value.subId)
             }
-            console.log(this.deleteSubId)
+            // console.log(this.deleteSubId)
         },
         getMain() {
             fetch("http://localhost:8080/find_mainC", {

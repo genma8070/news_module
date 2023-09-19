@@ -44,7 +44,7 @@ export default {
             } else {
                 this.deleteId.push(value.newsId)
             }
-            console.log(this.deleteId)
+            // console.log(this.deleteId)
         },
         subMove(subI) {
             if (subI == "") {
@@ -268,7 +268,7 @@ export default {
             this.$router.push("/category");
         },
         go(target) {
-            console.log(target)
+            // console.log(target)
             this.$router.push(`/update/${target.newsId}`);
 
         },

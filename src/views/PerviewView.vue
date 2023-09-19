@@ -139,7 +139,7 @@ export default {
     mounted() {
         this.get();
         this.formatter();
-        console.log(this.data.openDate)
+        // console.log(this.data.openDate)
         this.vh = document.documentElement.scrollHeight - 72 - 85;
         document.getElementById("wrap").style.height = this.vh.toString() + "px";
 

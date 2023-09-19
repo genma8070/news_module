@@ -161,9 +161,6 @@ export default {
             }
             // console.log(this.mainT)
         },
-        p() {
-            console.log(this.openDate)
-        },
         getMainName(value) {
             // console.log(this.mainC)
             const index = this.mainC.findIndex(i => i.mainId === value);

@@ -37,9 +37,10 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log(data)
+                    // console.log(data)
+                    this.mainI = date.sub.mainId
                     this.title = data.sub.subCategoryName
-                   
+
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -47,6 +48,7 @@ export default {
         },
         updata() {
             let body = {
+                "mianId": this.mainI,
                 "subId": this.$route.params.Id,
                 "subTitle": this.title,
             }
@@ -61,11 +63,20 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    window.alert(data.message);
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        this.backToLsit();
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
+                    }
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
+        },
+        backToLsit() {
+            this.$router.push('/category/management')
         },
 
 
@@ -81,7 +92,11 @@ export default {
 </script>
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 ">
-        <h1 class="text-center mt-4">更新副分類</h1>
+        <div class="d-flex justify-content-around mt-3">
+            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
+            <h1 class="mx-n5 ms-5">編輯副分類</h1>
+            <p class="mx-2"></p>
+        </div>
         <div class="d-flex mt-5 mx-5 border border-dark border-2 justify-content-center">
             <div class="row d-flex flex-column mx-3 my-2">
                 <div class="col d-flex">

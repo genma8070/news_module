@@ -28,7 +28,20 @@ export default {
     },
     methods: {
         formatter() {
-            this.time = (this.data.openDate).replace('T', ' ')
+            if (this.data.openDate != null && this.data.openDate != '') {
+                this.time = (this.data.openDate).replace('T', ' ')
+            } else {
+                const currentDate = new Date();
+                const year = currentDate.getFullYear();
+                const month = String(currentDate.getMonth() + 1).padStart(2, '0');  // 月份從0開始，需要加1
+                const day = String(currentDate.getDate()).padStart(2, '0');
+                const hours = String(currentDate.getHours()).padStart(2, '0');
+                const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+                const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+                this.time = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                this.data.openDate = this.time.replace(' ', 'T');
+            }
         },
         get() {
             if (this.$route.params.Id == 0) {
@@ -37,7 +50,7 @@ export default {
                 this.data = JSON.parse(sessionStorage.getItem("update"))
             }
 
-            console.log(this.data)
+            // console.log(this.data)
         },
         getUrl(newsId) {
             return '/updata/' + newsId;
@@ -63,7 +76,16 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    window.alert(data.message);
+                    // console.log(data)
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        sessionStorage.clear();
+                        this.$router.push('/')
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
+                        this.backToAdd();
+                    }
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -86,7 +108,7 @@ export default {
                 "text": this.data.text,
                 "openDate": this.data.openDate
             }
-            fetch("http://localhost:8080/update_news", {
+            fetch("http://localhost:8080/new_news", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -97,18 +119,27 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    window.alert(data.message);
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        sessionStorage.clear();
+                        this.$router.push('/')
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
+                        this.backToUpdate();
+                    }
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
         },
 
+
     },
     mounted() {
         this.get();
         this.formatter();
-
+        console.log(this.data.openDate)
         this.vh = document.documentElement.scrollHeight - 72 - 85;
         document.getElementById("wrap").style.height = this.vh.toString() + "px";
 
@@ -147,12 +178,10 @@ export default {
             </div>
         </div>
 
-        <div class="d-flex h-100 mt-1 mx-5 border border-dark border-2 justify-content-center ">
-
-            <div class="row d-flex flex-column mx-3 my-2">
-                <p>{{ data.text }}</p>
-            </div>
-        </div>
+        <textarea class="d-flex h-100 mt-1 mx-5 border border-dark border-2 justify-content-center px-3" disabled>
+                {{ data.text }}
+                
+        </textarea>
 
     </div>
 </template>

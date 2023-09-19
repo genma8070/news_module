@@ -1,6 +1,6 @@
 <script>
 import Pagination from '../components/Pagination.vue';
-import Result from '../components/Result.vue';
+import Result from '../components/Result_List.vue';
 export default {
     components: {
         Pagination,
@@ -30,7 +30,8 @@ export default {
             isSearch: true,
             deleteId: [],
             mainValue: "",
-            subValue: ""
+            subValue: "",
+            sort: true
 
         }
     },
@@ -46,7 +47,7 @@ export default {
             console.log(this.deleteId)
         },
         subMove(subI) {
-            if(subI == ""){
+            if (subI == "") {
                 this.goSearch();
                 return
             }
@@ -72,7 +73,8 @@ export default {
                 })
                 .then((data) => {
                     this.mainC = data.list2;
-                    console.log(this.mainC)
+                    // console.log(this.mainC)
+
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -91,7 +93,8 @@ export default {
                 })
                 .then((data) => {
                     this.subC = data.list;
-                    console.log(data)
+                    // console.log(data)
+
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -128,6 +131,7 @@ export default {
                     } else {
                         this.subI = ""
                     }
+
                     // console.log(this.mainT)
                 })
                 .catch(function (error) {
@@ -146,14 +150,15 @@ export default {
         find() {
             let body = {
                 "index": (this.currentPage - 1) * this.itemsPerPage,
-                "items": this.itemsPerPage
+                "items": this.itemsPerPage,
+                "sort": true
             }
-
-            fetch("http://localhost:8080/get_all_b_desc", {
-                method: "GET",
+            fetch("http://localhost:8080/get_all", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify(body)
             })
                 .then(function (response) {
                     return response.json();
@@ -161,7 +166,7 @@ export default {
                 .then((data) => {
                     // console.log(data)
                     this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_b_desc", {
+                    fetch("http://localhost:8080/find_all_news", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -174,6 +179,7 @@ export default {
                         .then((data) => {
                             this.items = data.list
                             this.isSearch = false
+
                         })
                         .catch(function (error) {
                             console.log(error)
@@ -194,8 +200,9 @@ export default {
                 "endDate": this.endTime,
                 "mainCategory": this.mainI,
                 "subCategory": this.subI,
+                "sort": this.sort
             }
-            fetch("http://localhost:8080/search_news_b_A_desc", {
+            fetch("http://localhost:8080/search_news_A", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -206,6 +213,12 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
+                    if (data.message != null) {
+                        if (!data.messageType) {
+                            window.alert(data.message)
+                        }
+                    }
+
                     this.isSearch = true
                     this.contentCount = data.list.length
 
@@ -215,10 +228,11 @@ export default {
                         "endDate": this.endTime,
                         "mainCategory": this.mainI,
                         "subCategory": this.subI,
+                        "sort": this.sort,
                         "index": (this.currentPage - 1) * this.itemsPerPage,
                         "items": this.itemsPerPage
                     }
-                    fetch("http://localhost:8080/search_news_b_desc", {
+                    fetch("http://localhost:8080/search_news", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -230,6 +244,7 @@ export default {
                         })
                         .then((data) => {
                             this.items = data.list
+
                             // this.contentCount = data.list.length;
                         })
                         .catch(function (error) {
@@ -272,8 +287,11 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.message) {
-                        window.alert(data.message)
+                    if (data.messageType) {
+                        window.alert(data.message);
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
                     }
                     this.find();
                 })
@@ -286,7 +304,7 @@ export default {
             let body = {
                 "list": this.deleteId,
             }
-            fetch("http://localhost:8080/delete", {
+            fetch("http://localhost:8080/management", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -297,8 +315,11 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.message) {
-                        window.alert(data.message)
+                    if (data.messageType) {
+                        window.alert(data.message);
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
                     }
                     this.find();
                 })
@@ -307,8 +328,13 @@ export default {
                 })
 
         },
-        addCategory() {
-            this.$router.push('/category/add')
+
+
+        managementMainCategory() {
+            this.$router.push('/maincategory/management')
+        },
+        managementSubCategory() {
+            this.$router.push('/subcategory/management')
         },
         backToLsit() {
             this.$router.push('/')
@@ -329,31 +355,41 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
         <div class="d-flex justify-content-between">
-                <div><input type="button" @click="backToLsit" class="btn btn-outline-info ms-5 my-2" value="回上一頁">
-                </div>
-                <div></div>
-            </div>   
+            <div><input type="button" @click="backToLsit" class="btn btn-outline-info ms-5 my-2" value="回上一頁">
+            </div>
+            <div></div>
+        </div>
         <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
-         
-            <div class="row d-flex flex-column mt-4 me-2">
-                <div class="col d-flex">
-                    <h4>父分類:</h4>
-                    <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
-                        <option value="" selected>--請選擇父分類--</option>
-                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
-                        </option>
-                    </select>
-                    <h4 class="ms-2">子分類:</h4>
-                    <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="sub">
-                        <option value="" selected id="sub">--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId" id="sub">{{ subData.subCategoryName }}({{ subData.news
-                        }})</option>
-                    </select>
+
+            <div class="row d-flex flex-column mt-3 me-2">
+                <div class="col">
+                    <div class="d-flex mb-2">
+                        <h4>父分類:</h4>
+                        <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
+                            <option value="" selected>--請選擇父分類--</option>
+                            <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
+                            </option>
+                        </select>
+                        <div class="mt-2">
+                            <a @click="managementMainCategory" class=" mb-1 mt-n3 ms-3 btn btn-dark">管理主分類</a>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <h4>子分類:</h4>
+                        <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub"
+                            id="sub">
+                            <option value="" selected id="sub">--請選擇子分類--</option>
+                            <option v-for="subData in subC" :value="subData.subId" id="sub">{{ subData.subCategoryName }}({{
+                                subData.news
+                            }})</option>
+                        </select>
+                        <div class="mt-2">
+                            <a @click="managementSubCategory" class=" mb-1 mt-n3 ms-3 btn btn-dark">管理子分類</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="mt-5">
-                <a @click="addCategory" class=" mb-3 mt-n2 ms-3 btn btn-dark">新增</a>
-            </div>
+
         </div>
         <div class="d-flex justify-content-between mt-2 me-3">
             <div></div>
@@ -366,19 +402,11 @@ export default {
                 </select>
             </div>
         </div>
-        <div class="d-flex justify-content-between">
-            <div class="mt-2">
-                <button @click="changeOpen" class="ms-5" type="button">刪除新聞</button>
-            </div>
-            <div class="mt-2 me-5">
-                <button @click="add" class="ms-5" type="button">調整分類</button>
-            </div>
-        </div>
         <div class="Result">
             <table class="table table-danger table-striped table-bordered border border-danger">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>No.</th>
                         <th>分類1</th> <!-- 空白列 -->
                         <th>分類2</th>
                         <th>標題</th>
@@ -391,7 +419,7 @@ export default {
                 <tbody>
                     <!-- 使用子元件並傳遞相關資料 -->
                     <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go"
-                        v-bind:key="property" v-bind:property="property" v-bind:index="index" />
+                        v-bind:key="property" v-bind:property="property" v-bind:index="index" :page="currentPage" />
                 </tbody>
 
             </table>

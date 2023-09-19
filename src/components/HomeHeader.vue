@@ -16,7 +16,7 @@ export default {
             this.$router.push("/");
         },
         gF() {
-            this.$router.push("/f_home");
+            this.$router.push("/user_home");
 
         }
     }

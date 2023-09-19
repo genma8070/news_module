@@ -5,7 +5,10 @@ export default {
     "index",
     "page"
   ],
-  emits: ['fChange'],
+  emits: [
+    'getTarget',
+    'goTatget'
+  ],
   data() {
     return {
       ed: 0,
@@ -15,15 +18,18 @@ export default {
     };
   },
   methods: {
-    getEditUrl(questionnaireId) {
-      return '/ans/' + questionnaireId;
-    },
-    sendData(value) {
-      this.$emit('f-change', value);
-    },
     getUrl(newsId) {
-      this.$router.push('user/text/' + newsId)
-      // return '/Text/' + newsId;
+      return '/Text/' + newsId;
+    },
+    getEditUrl(questionnaireId) {
+      return '/edit/' + questionnaireId;
+    },
+    sendId(property) {
+      this.$emit('goTarget', property);
+    },
+    sendData(property) {
+      this.$emit('getTarget', property);
+      // console.log(property)
     },
     formatter() {
       if (this.property.openDate != null) {
@@ -31,32 +37,29 @@ export default {
       } else {
         this.time = '未定'
       }
-    }
 
+    }
   },
   mounted() {
+    // console.log(this.property)
     this.ed = new Date(this.property.endTime).getTime()
     this.nd = Date.now()
     this.formatter()
   }
-
-
 };
-</script>
+</script> 
 
 <template>
   <tr class="fw-bold">
-    <td>{{ index + 1 + (page - 1) * 10 }}</td>
+    <td>{{ index + 1 + (page - 1) * 10  }}</td>
     <td>{{ property.mainCategoryName }}</td>
     <td>{{ property.subCategoryName }}</td>
-    <!-- <td><a :href="getUrl(property.newsId)" class="aa">{{ property.title }}</a></td> -->
-    <td>
-      <div @click="getUrl(property.newsId)" class="d-flex flex-column btn">
-        <span class="h3">{{ property.title }}</span>
-        <span class="h5">{{ property.subTitle }}</span>
-      </div>
-    </td>
+    <td>{{ property.title }}</td>
     <td>{{ time }}</td>
+    <td v-if="property.open == 1">開放中</td>
+    <td v-else-if="property.open == 0">未開放</td>
+    <td v-else="property.open == 2">隱藏中</td>
+    <td><a :href="getUrl(property.newsId)" class="btn btn-secondary">詳細</a></td>
   </tr>
 </template>
   
@@ -65,18 +68,15 @@ export default {
 .aa:link {
   //設定還沒有瀏覽過的連結
   text-decoration: none;
-  // background-color: #f841be;
+  background-color: #ffffff;
   color: black;
   border-radius: 5px;
-
 }
 
 .aa:hover {
   //設定滑鼠移經的連結
   text-decoration: none;
-  background-color: #eb6a86;
-  transition: 0.2s;
-  padding: 3px 5px;
+  background-color: #e18b8b;
   color: black;
   border-radius: 5px;
 
@@ -85,7 +85,7 @@ export default {
 .aa:active {
   //設定正在點選的連結
   text-decoration: none;
-  // background-color: rgb(255, 68, 68);
+  background-color: rgb(255, 68, 68);
   color: black;
   border-radius: 5px;
 
@@ -95,7 +95,7 @@ export default {
 .aa:visited {
   //設定還沒有瀏覽過的連結
   text-decoration: none;
-  // background-color: #ffffff;
+  background-color: #ffffff;
   color: black;
   border-radius: 5px;
 }

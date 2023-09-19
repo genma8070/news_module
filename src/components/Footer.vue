@@ -1,17 +1,17 @@
 <script>
 export default {
-  
+
     data() {
         return {
-        
+
         };
     },
     methods: {
         jump(event) {
-      event.preventDefault(); // 阻止链接的默认行为
-        this.$router.push('/'); // 导航到f_home页
-    }
-  
+            event.preventDefault(); // 阻止链接的默认行为
+            this.$router.push('/'); // 导航到f_home页
+        }
+
     }
 }
 </script>
@@ -22,12 +22,14 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.murasaki{
+.murasaki {
     background-color: rgb(143, 77, 143);
 }
 
 a {
-  text-decoration: none; /* 移除下划线 */
-  color: inherit; /* 继承父元素的文本颜色 */
+    text-decoration: none;
+    /* 移除下划线 */
+    color: inherit;
+    /* 继承父元素的文本颜色 */
 }
 </style>

@@ -42,7 +42,8 @@ export default {
                 .then((data) => {
                     this.data = data;
                     this.formatter()
-                    console.log(data)
+
+                    // console.log(data)
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -67,7 +68,7 @@ export default {
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <HeaderView></HeaderView>
         <div class="d-flex justify-content-around mt-2">
-            <a href="/f_home" class="btn btn-secondary fw-bold me-3 mb-5 mt-4">上一頁</a>
+            <a href="/user_home" class="btn btn-secondary fw-bold me-3 mb-5 mt-4">上一頁</a>
             <!-- <h1 class="text-center ms-n5">{{ data.title }}</h1> -->
             <div class="d-flex flex-column text-center me-4 ms-n5">
                 <span class="h1">{{ data.title }}</span>
@@ -93,12 +94,11 @@ export default {
             </div>
         </div>
 
-        <div class="d-flex h-100 mt-1 mx-5 border border-dark border-2 justify-content-center ">
 
-            <div class="row d-flex flex-column mx-3 my-2">
-                <p>{{ data.text }}</p>
-            </div>
-        </div>
+        <textarea class="d-flex h-100 mt-1 mx-5 border border-dark border-2 justify-content-center px-3" disabled>
+                {{ data.text }}
+                
+        </textarea>
 
     </div>
 </template>

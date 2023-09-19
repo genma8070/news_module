@@ -43,8 +43,9 @@ export default {
   <tr class="fw-bold">
     <td v-if="property2.news == 0"><input type="checkbox" name="news" @change="sendSubData(property2)" :value="property2"></td>
     <td v-else></td>
+    <td>{{ index + 1 }}</td>
     <td>{{ property2.subCategoryName }}({{ property2.news }})</td>
-    <td><a :href="getUrl(property2.subId)" class="btn btn-secondary">詳細</a></td>
+    <td><a :href="getUrl(property2.subId)" class="btn btn-secondary">更新</a></td>
   </tr>
 </template>
   

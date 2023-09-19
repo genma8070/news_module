@@ -11,7 +11,7 @@ export default {
         return {
             vh: 0,
             title: "",
-            subTitle:"",
+            subTitle: "",
             text: "",
             startTime: "",
             endTime: "",
@@ -42,7 +42,8 @@ export default {
                 .then((data) => {
                     this.data = data;
                     this.formatter()
-                    console.log(data)
+
+                    // console.log(data)
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -53,7 +54,7 @@ export default {
         },
 
     },
-  
+
     mounted() {
         this.get();
 
@@ -92,12 +93,11 @@ export default {
             </div>
         </div>
 
-        <div class="d-flex h-100 mt-1 mx-5 border border-dark border-2 justify-content-center ">
 
-            <div class="row d-flex flex-column mx-3 my-2">
-                <p>{{ data.text }}</p>
-            </div>
-        </div>
+        <textarea class="d-flex h-100 mt-1 mx-5 border border-dark border-2 justify-content-center px-3" disabled>
+                {{ data.text }}
+                
+        </textarea>
 
     </div>
 </template>

@@ -2,7 +2,8 @@
 export default {
   props: [
     "property",
-    "index"
+    "index",
+    "page"
   ],
   emits: [
     'getTarget',
@@ -31,7 +32,12 @@ export default {
       // console.log(property)
     },
     formatter() {
-      this.time = this.property.openDate.replace('T', ' ')
+      if (this.property.openDate != null) {
+        this.time = this.property.openDate.replace('T', ' ')
+      } else {
+        this.time = '未定'
+      }
+
     }
   },
   mounted() {
@@ -46,12 +52,14 @@ export default {
 <template>
   <tr class="fw-bold">
     <td><input type="checkbox" name="news" @change="sendData(property)" :value="property"></td>
+    <td>{{ index + 1 + (page - 1) * 10  }}</td>
     <td>{{ property.mainCategoryName }}</td>
     <td>{{ property.subCategoryName }}</td>
     <td>{{ property.title }}</td>
     <td>{{ time }}</td>
-    <td v-if="property.open">開放中</td>
-    <td v-else>隱藏中</td>
+    <td v-if="property.open == 1">開放中</td>
+    <td v-else-if="property.open == 0">未開放</td>
+    <td v-else="property.open == 2">隱藏中</td>
     <td><a :href="getUrl(property.newsId)" class="btn btn-secondary">詳細</a></td>
   </tr>
 </template>

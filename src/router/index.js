@@ -1,29 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from "../views/Home.vue";
-import F_HomeView from "../views/F_Home.vue";
+import F_HomeView from "../views/User_Home.vue";
 import UpdateView from "../views/UpdateView.vue";
 import AddView from "../views/AddView.vue";
 import TextView from "../views/TextView.vue";
 import UserTextView from "../views/UserTextView.vue";
 import PerviewView from "../views/PerviewView.vue";
 import CategoryView from "../views/CategoryView.vue";
-import CategoryUpdateView from "../views/CategoryUpdateView.vue";
+import MainCategoryUpdateView from "../views/MainCategoryUpdateView.vue";
 import SubCategoryUpdateView from "../views/SubCategoryUpdateView.vue";
-import CategoryManagementView from "../views/CategoryManagementView.vue";
-import CategoryAddView from "../views/CategoryAddView.vue";
+import MainCategoryAddView from "../views/MainCategoryAddView.vue";
+import SubCategoryAddView from "../views/SubCategoryAddView.vue";
+import MainCategoryManagementView from "../views/MainCategoryManagementView.vue";
+import SubCategoryManagementView from "../views/SubCategoryManagementView.vue";
 
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // {
-    //   // 首頁
-    //   path: '/',
-    //   name: 'login',
-    //   component: LoginView
-    // },
-
     {
       // 管理者ホーム画面
       path: '/',
@@ -56,8 +51,8 @@ const router = createRouter({
     },
     {
       // ユーザーホーム画面
-      path: '/f_home',
-      name: 'f_home',
+      path: '/user_home',
+      name: 'user_home',
       component: F_HomeView,
      
     },
@@ -67,19 +62,13 @@ const router = createRouter({
       name: 'category',
       component: CategoryView,
      
-    },{
+    },
+    {
     
       // ユーザーホーム画面
-      path: '/category/management',
-      name: 'categoryManagement',
-      component: CategoryManagementView,
-     
-    },{
-    
-      // ユーザーホーム画面
-      path: '/category/update/:Id',
-      name: 'CategoryUpdate',
-      component: CategoryUpdateView,
+      path: '/maincategory/update/:Id',
+      name: 'MainCategoryUpdate',
+      component: MainCategoryUpdateView,
      
     },
     {
@@ -93,9 +82,35 @@ const router = createRouter({
     {
     
       // ユーザーホーム画面
-      path: '/category/add',
-      name: 'CategoryAddView',
-      component: CategoryAddView,
+      path: '/maincategory/add',
+      name: 'MainCategoryAddView',
+      component: MainCategoryAddView,
+     
+    }, 
+    
+    {
+    
+      // ユーザーホーム画面
+      path: '/subcategory/add',
+      name: 'SubCategoryAddView',
+      component: SubCategoryAddView,
+     
+    }, 
+    {
+    
+      // ユーザーホーム画面
+      path: '/maincategory/management',
+      name: 'MainCategoryManagementView',
+      component: MainCategoryManagementView,
+     
+    }, 
+    
+    {
+    
+      // ユーザーホーム画面
+      path: '/subcategory/management',
+      name: 'SubCategoryManagementView',
+      component: SubCategoryManagementView,
      
     }, 
     {

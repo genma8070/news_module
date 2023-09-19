@@ -33,7 +33,8 @@ export default {
             deleteId: [],
             deleteSubId: [],
             mainValue: "",
-            subValue: ""
+            subValue: "",
+            mainSub: true
 
 
         }
@@ -72,7 +73,8 @@ export default {
                 })
                 .then((data) => {
                     this.items = data.list2;
-                    console.log(data)
+
+                    // console.log(data)
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -91,7 +93,8 @@ export default {
                 })
                 .then((data) => {
                     this.subItems = data.list;
-                    console.log(data)
+                    // console.log(data)
+
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -115,19 +118,93 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    window.alert(data.message)
-                    this.getMain();
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        this.deleteId = [];
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
+                    } this.getMain();
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
-        }
-        ,
-        deleteSub() {
-            let body = {
-                "deleteList": this.deleteSubId
+        },
+        changMain() {
+            this.mainSub = true
+        },
+        changSub() {
+            this.mainSub = false
+        },
+        mainMove() {
+            this.subI = ""
+            this.findSub();
+            this.changeMainT();
+
+        }, subMove(subI) {
+            this.subC.forEach(element => {
+                if (element.subId == subI) {
+                    this.mainI = element.mainId;
+                    this.findSub(subI);
+
+                }
+                return
+            });
+        },
+        getMain() {
+            fetch("http://localhost:8080/find_mainC", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+
+                    this.mainC = data.list2;
+                    // console.log(this.mainC)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        },
+        getSub() {
+            fetch("http://localhost:8080/get_subC", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    this.subC = data.list;
+
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        },
+        changeMainT() {
+            const selectedMain = this.mainC.find(data => data.mainId === this.mainI);
+            if (selectedMain) {
+                this.mainT = selectedMain.mainCategoryName;
+            } else {
+                this.mainT = ''; // 清空 mainT 如果没有选中的主分类
+                this.getSub();
             }
-            fetch("http://localhost:8080/delete_sub", {
+            // console.log(this.mainT)
+        },
+        findSub(subI) {
+            let body = {
+                "mainId": this.mainI,
+            }
+            fetch("http://localhost:8080/find_subC", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -138,13 +215,22 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    window.alert(data.message)
-                    this.getSub();
+                    this.subC = data.list
+                    if (subI != null) {
+                        this.subI = subI
+                    } else {
+                        this.subI = ""
+                    }
+
+                    // console.log(this.mainT)
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
-        }
+
+        }, addMainCategory() {
+            this.$router.push('/maincategory/add')
+        },
 
     },
     mounted() {
@@ -160,25 +246,33 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2 over-flow">
 
-        <div class="d-flex justify-content-between">
-            <div class="d-flex justify-content-between w-50">
+        <div class="d-flex flex-column justify-content-between">
+            <div class="d-flex justify-content-around">
+                <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
+                <h1 class="mx-n5 ms-5">管理主分類</h1>
+                <p class="mx-2"></p>
+            </div>
 
-                <div><input type="button" @click="backToLsit" class="btn btn-outline-info ms-4 my-2" value="回上一頁">
+            <div>
+
+                <div class="d-flex justify-content-around align-items-center">
+                    <p class="mx-5 me-5 "></p>
+                    <div class="mt-3 me-n5 ms-5">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <a @click="addMainCategory" class="mb-1 btn btn-dark">新增主分類</a>
+
+                        <input type="button" @click="deleteMain" class="btn btn-dark" value="刪除主分類">
+                    </div>
                 </div>
-                <div><input type="button" @click="deleteMain" class="btn btn-dark me-2 my-2" value="刪除主分類"></div>
             </div>
-            <div class="d-flex justify-content-between w-50">
-                <p></p>
-                <div><input type="button" @click="deleteSub" class="btn btn-dark me-4 my-2" value="刪除子分類"></div>
+            <div class="Result">
 
-            </div>
-        </div>
-        <div class="d-flex">
-            <div class="Result h-75 w-50">
-                <table class="table table-danger table-striped table-bordered border border-danger">
+                <table class="table table-danger table-striped table-bordered border border-danger h-50">
                     <thead>
                         <tr>
                             <th>可否刪除</th>
+                            <th>No.</th>
                             <th>主分類</th>
                             <th></th>
                         </tr>
@@ -186,31 +280,14 @@ export default {
 
                     <tbody>
                         <!-- 使用子元件並傳遞相關資料 -->
-                        <Result @getTarget="getId(property)" v-for="(property, index) in items" v-bind:key="property"
+                        <Result @getTarget="getId(property)" v-for="(property, index) in mainC" v-bind:key="property"
                             v-bind:property="property" v-bind:index="index" />
                     </tbody>
 
                 </table>
             </div>
-            <div class="Result h-50 w-50">
-                <table class="table table-danger table-striped table-bordered border border-danger">
-                    <thead>
-                        <tr>
-                            <th>可否刪除</th>
-                            <th>副分類</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <!-- 使用子元件並傳遞相關資料 -->
-                        <subResult @getSubTarget="getSubId(property2)" v-for="(property2, index) in subItems"
-                            v-bind:key="property2" v-bind:property2="property2" v-bind:index="index" />
-                    </tbody>
-
-                </table>
-            </div>
         </div>
+
 
     </div>
 </template>
@@ -231,6 +308,7 @@ export default {
     margin-bottom: -200px;
     padding-top: 5px;
     margin-top: 5px;
+    height: 50vh;
     /* 自定義高度，根據需要調整 */
 }
 

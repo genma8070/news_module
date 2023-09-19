@@ -13,7 +13,7 @@ export default {
       ed: 0,
       nd: 0,
       time: "",
-      name:""
+      name: ""
 
     };
   },
@@ -21,21 +21,15 @@ export default {
     getUrl(mainId) {
       return '/category/update/' + mainId;
     },
-    getEditUrl(questionnaireId) {
-      return '/edit/' + questionnaireId;
-    },
-    sendId(property) {
-      this.$emit('goTarget', property);
-    },
     sendData(property) {
       this.$emit('getTarget', property);
       // console.log(property)
     }
-  
-  
+
+
   },
   mounted() {
-  
+
   }
 };
 </script> 
@@ -44,8 +38,9 @@ export default {
   <tr class="fw-bold">
     <td v-if="property.news == 0"><input type="checkbox" name="news" @change="sendData(property)" :value="property"></td>
     <td v-else></td>
+    <td>{{ index + 1 }}</td>
     <td>{{ property.mainCategoryName }}({{ property.news }})</td>
-    <td><a :href="getUrl(property.mainId)" class="btn btn-secondary">詳細</a></td>
+    <td><a :href="getUrl(property.mainId)" class="btn btn-secondary">更新</a></td>
   </tr>
 </template>
   

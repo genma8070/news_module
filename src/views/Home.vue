@@ -66,8 +66,9 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
+
                     this.mainC = data.list2;
-                    console.log(this.mainC)
+                    // console.log(this.mainC)
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -86,7 +87,7 @@ export default {
                 })
                 .then((data) => {
                     this.subC = data.list;
-                    console.log(data)
+
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -123,6 +124,7 @@ export default {
                     } else {
                         this.subI = ""
                     }
+
                     // console.log(this.mainT)
                 })
                 .catch(function (error) {
@@ -141,22 +143,28 @@ export default {
         find() {
             let body = {
                 "index": (this.currentPage - 1) * this.itemsPerPage,
-                "items": this.itemsPerPage
+                "items": this.itemsPerPage,
+                "sort": this.sort
             }
-
-            fetch("http://localhost:8080/get_all_b_desc", {
-                method: "GET",
+            fetch("http://localhost:8080/get_all", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify(body)
             })
                 .then(function (response) {
                     return response.json();
                 })
                 .then((data) => {
-                    // console.log(data)
+                    if (data.message != null) {
+                        if (!data.messageType) {
+                            window.alert(data.message)
+                        }
+                    }
+                    console.log(data)
                     this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_b_desc", {
+                    fetch("http://localhost:8080/find_all_news", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -169,6 +177,7 @@ export default {
                         .then((data) => {
                             this.items = data.list
                             this.isSearch = false
+
                         })
                         .catch(function (error) {
                             console.log(error)
@@ -189,9 +198,10 @@ export default {
                 "endDate": this.endTime,
                 "mainCategory": this.mainI,
                 "subCategory": this.subI,
+                "sort": this.sort
             }
-            if(this.sort){
-            fetch("http://localhost:8080/search_news_b_A_desc", {
+
+            fetch("http://localhost:8080/search_news_A", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -202,6 +212,11 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
+                    if (data.message != null) {
+                        if (!data.messageType) {
+                            window.alert(data.message)
+                        }
+                    }
                     this.isSearch = true
                     this.contentCount = data.list.length
 
@@ -212,55 +227,10 @@ export default {
                         "mainCategory": this.mainI,
                         "subCategory": this.subI,
                         "index": (this.currentPage - 1) * this.itemsPerPage,
-                        "items": this.itemsPerPage
+                        "items": this.itemsPerPage,
+                        "sort": this.sort
                     }
-                    fetch("http://localhost:8080/search_news_b_desc", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(body)
-                    })
-                        .then(function (response) {
-                            return response.json();
-                        })
-                        .then((data) => {
-                            this.items = data.list
-                            // this.contentCount = data.list.length;
-                        })
-                        .catch(function (error) {
-                            console.log(error)
-                        })
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-            }
-            else{
-                fetch("http://localhost:8080/search_news_b_A_asc", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body)
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then((data) => {
-                    this.isSearch = true
-                    this.contentCount = data.list.length
-
-                    let body = {
-                        "title": this.title,
-                        "startDate": this.startTime,
-                        "endDate": this.endTime,
-                        "mainCategory": this.mainI,
-                        "subCategory": this.subI,
-                        "index": (this.currentPage - 1) * this.itemsPerPage,
-                        "items": this.itemsPerPage
-                    }
-                    fetch("http://localhost:8080/search_news_b_asc", {
+                    fetch("http://localhost:8080/search_news", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -282,7 +252,6 @@ export default {
                     console.log(error)
                 })
 
-            }
         },
         mainMove() {
             this.subI = ""
@@ -316,8 +285,14 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.message) {
-                        window.alert(data.message)
+                    // console.log(data)
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        this.deleteId = []
+                        // this.find();
+                    }
+                    else if (!data.messageType) {
+                        window.alert(data.message);
                     }
                     this.find();
                 })
@@ -341,8 +316,12 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.message) {
-                        window.alert(data.message)
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        this.deleteId = []
+                    }
+                    else if (!data.messageType) {
+                        window.alert(data.message);
                     }
                     this.find();
                 })
@@ -352,47 +331,7 @@ export default {
 
         },
         sortChange() {
-          this.goSearch();
-        },
-        findAsc() {
-            let body = {
-                "index": (this.currentPage - 1) * this.itemsPerPage,
-                "items": this.itemsPerPage
-            }
-
-            fetch("http://localhost:8080/get_all_b_asc", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then((data) => {
-                    // console.log(data)
-                    this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_b_asc", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(body)
-                    })
-                        .then(function (response) {
-                            return response.json();
-                        })
-                        .then((data) => {
-                            this.items = data.list
-                            // console.log(data)
-                        })
-                        .catch(function (error) {
-                            console.log(error)
-                        })
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
+            this.goSearch();
         },
 
     },
@@ -417,19 +356,21 @@ export default {
                 </div>
                 <div class="col d-flex">
                     <h4>發布日期區間:</h4>
-                    <input v-model="startTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
-                    <input v-model="endTime" style="height: 25px;" class="ms-2" type="date" name="" id="">
+                    <input v-model="startTime" style="height: 25px;" class="ms-2" type="datetime-local" name="" id="">
+                    <input v-model="endTime" style="height: 25px;" class="ms-2" type="datetime-local" name="" id="">
                 </div>
                 <div class="col d-flex">
                     <h4>父分類:</h4>
                     <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
                         <option value="" selected>--請選擇父分類--</option>
-                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})</option>
+                        <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
+                        </option>
                     </select>
                     <h4 class="ms-1">子分類:</h4>
                     <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
                         <option value="" selected>--請選擇子分類--</option>
-                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}({{ subData.news }})
+                        <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}({{ subData.news
+                        }})
                         </option>
                     </select>
                 </div>
@@ -471,6 +412,7 @@ export default {
                 <thead>
                     <tr>
                         <th></th>
+                        <th>No.</th>
                         <th>分類1</th> <!-- 空白列 -->
                         <th>分類2</th>
                         <th>標題</th>
@@ -483,7 +425,7 @@ export default {
                 <tbody>
                     <!-- 使用子元件並傳遞相關資料 -->
                     <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go"
-                        v-bind:key="property" v-bind:property="property" v-bind:index="index" />
+                        v-bind:key="property" v-bind:property="property" v-bind:index="index" :page="currentPage" />
                 </tbody>
 
             </table>

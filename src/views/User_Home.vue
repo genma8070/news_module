@@ -57,6 +57,11 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
+                    if (data.message != null) {
+                        if (!data.messageType) {
+                            window.alert(data.message)
+                        }
+                    }
                     // console.log(data)
                     this.contentCount = data.list.length
                     fetch("http://localhost:8080/find_all_news_f", {
@@ -81,59 +86,8 @@ export default {
                     console.log(error)
                 })
         },
-        // findAsc() {
-        //     let body = {
-        //         "index": (this.currentPage - 1) * this.itemsPerPage,
-        //         "items": this.itemsPerPage
-        //     }
-
-        //     fetch("http://localhost:8080/get_all_f_a", {
-        //         method: "GET",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //     })
-        //         .then(function (response) {
-        //             return response.json();
-        //         })
-        //         .then((data) => {
-        //             // console.log(data)
-        //             this.contentCount = data.list.length
-        //             fetch("http://localhost:8080/find_all_news_f_a", {
-        //                 method: "POST",
-        //                 headers: {
-        //                     "Content-Type": "application/json",
-        //                 },
-        //                 body: JSON.stringify(body)
-        //             })
-        //                 .then(function (response) {
-        //                     return response.json();
-        //                 })
-        //                 .then((data) => {
-        //                     this.items = data.list
-        //                     // console.log(data)
-        //                 })
-        //                 .catch(function (error) {
-        //                     console.log(error)
-        //                 })
-        //         })
-        //         .catch(function (error) {
-        //             console.log(error)
-        //         })
-        // },
-        // sortChange() {
-        //     if (this.sort) {
-        //         this.find();
-        //     } else {
-        //         this.findAsc();
-        //     }
-        // }
-
-
-
     },
     mounted() {
-
         this.find()
 
         // 設定高度
@@ -149,6 +103,7 @@ export default {
             <table class="table table-danger table-striped table-bordered border border-danger">
                 <thead>
                     <tr>
+                        <th>No.</th>
                         <th>分類1</th> <!-- 空白列 -->
                         <th>分類2</th>
                         <th>標題</th>
@@ -159,12 +114,12 @@ export default {
                 <tbody>
                     <!-- 使用子元件並傳遞相關資料 -->
                     <Result v-for="(property, index) in items" v-bind:key="property" v-bind:property="property"
-                        v-bind:index="index" />
+                        v-bind:index="index" v-bind:page="currentPage" />
                 </tbody>
 
             </table>
         </div>
-        <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
+        <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChanged"
             class="mx-auto mb-n5 page"></pagination>
 
     </div>

@@ -31,6 +31,7 @@ export default {
             deleteId: [],
             mainName: "",
             subName: "",
+            mainSub: true
 
         }
     },
@@ -43,7 +44,7 @@ export default {
             } else {
                 this.deleteId.push(value.newsId)
             }
-            console.log(this.deleteId)
+            // console.log(this.deleteId)
         },
         getMain() {
             fetch("http://localhost:8080/find_mainC", {
@@ -58,7 +59,7 @@ export default {
                 })
                 .then((data) => {
                     this.mainC = data.list2;
-                    console.log(this.mainC)
+
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -74,30 +75,7 @@ export default {
             }
             // console.log(this.mainT)
         },
-        addMain() {
-            let body = {
-                "mainCategoryName": this.mainName
-            }
-            fetch("http://localhost:8080/add_main", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body)
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.message) {
-                        window.alert(data.message)
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-
-        }, addSub() {
+        addSub() {
             let body = {
                 "subCategoryName": this.subName,
                 "mainId": this.mainI
@@ -113,8 +91,12 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.message) {
-                        window.alert(data.message)
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        this.backToLsit();
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
                     }
                     this.getMain();
                 })
@@ -124,9 +106,8 @@ export default {
 
         },
         backToLsit() {
-            this.$router.push('/category')
+            this.$router.push('/subcategory/management')
         }
-
     },
     mounted() {
         this.getMain();
@@ -139,26 +120,13 @@ export default {
 </script>
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
-        <div>
-            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-5" value="回上一頁">
-            <p></p>
+        <div class="d-flex justify-content-around">
+            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
+            <h1 class="mx-n5 ms-5">新增分類</h1>
+            <p class="mx-2"></p>
         </div>
-        <div class="d-flex flex-column mt-1 mx-5 border border-dark border-2 justify-content-center">
-            <h1 class="text-center mt-2">新增主分類</h1>
-            <div class="d-flex justify-content-center">
-                <div class="row d-flex mt-4 me-2">
 
-                    <div class="col d-flex">
-                        <label for="main" class="h5">主分類名稱: </label>
-                        <input v-model="mainName" type="text" id="main" class="ms-2" style="height: 25px;">
 
-                    </div>
-                </div>
-                <div class="mt-5">
-                    <a @click="addMain" class=" mb-3 mt-n3 ms-3 btn btn-dark">新增</a>
-                </div>
-            </div>
-        </div>
         <div class="d-flex flex-column mt-5 mx-5 border border-dark border-2 justify-content-center">
             <h1 class="text-center mt-2">新增子分類</h1>
             <div class="d-flex justify-content-center">

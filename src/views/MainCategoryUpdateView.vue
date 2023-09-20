@@ -48,9 +48,9 @@ export default {
         updata() {
             let body = {
                 "mainId": this.$route.params.Id,
-                "mainName": this.title,
+                "mainCategoryName": this.title,
             }
-            fetch("http://localhost:8080/updata_mainCategory", {
+            fetch("http://localhost:8080/add_main", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export default {
                 })
         },
         backToLsit() {
-            this.$router.push('/subcategory/management')
+            this.$router.push('/maincategory/management')
         },
 
 

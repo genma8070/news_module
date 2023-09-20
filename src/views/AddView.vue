@@ -184,8 +184,14 @@ export default {
             this.session.subCategoryName = this.subCategoryName;
             this.session.text = this.text;
             this.session.openDate = this.openDate;
-            this.getMainName(this.mainI)
-            this.getSubName(this.subI)
+            if (this.mainI != null) {
+                this.getMainName(this.mainI)
+            }
+
+            if (this.subI != null) {
+                this.getSubName(this.subI)
+            }
+
             sessionStorage.setItem("session", JSON.stringify(this.session));
             this.$router.push('/perview/0')
         },

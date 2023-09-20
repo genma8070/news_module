@@ -37,7 +37,7 @@ export default {
 </script>
 <template>
     <nav aria-label="Page navigation example">
-        <ul class="pagination">
+        <ul class="pagination  d-flex justify-content-center" style="text-align: center;">
             <!-- <li class="page-item"><a class="page-link" href="#" @click="goToPrevious(currentPage)">Previous</a></li> -->
             <li v-for="page in pageCount" :key="page" class="page-item">
                 <a class="page-link" href="#" @click="goToPage(page)">{{ page }}</a>

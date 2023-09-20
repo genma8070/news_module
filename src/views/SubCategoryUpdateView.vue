@@ -37,8 +37,8 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
-                    // console.log(data)
-                    this.mainI = date.sub.mainId
+                    console.log(data.sub)
+                    this.mainI = data.sub.mainId
                     this.title = data.sub.subCategoryName
 
                 })
@@ -48,11 +48,12 @@ export default {
         },
         updata() {
             let body = {
-                "mianId": this.mainI,
+                "mainId": this.mainI,
                 "subId": this.$route.params.Id,
-                "subTitle": this.title,
+                "subCategoryName": this.title,
+                
             }
-            fetch("http://localhost:8080/updata_subCategory", {
+            fetch("http://localhost:8080/add_sub", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -76,7 +77,7 @@ export default {
                 })
         },
         backToLsit() {
-            this.$router.push('/category/management')
+            this.$router.push('/subcategory/management')
         },
 
 

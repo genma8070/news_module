@@ -305,11 +305,11 @@ export default {
         sortChange() {
             this.goSearch();
         },
-        openNews(){
+        openNews() {
             this.switcher = true;
             this.openHide();
         },
-        hideNews(){
+        hideNews() {
             this.switcher = false;
             this.openHide();
         }
@@ -327,7 +327,7 @@ export default {
 }
 </script>
 <template>
-    <div id="wrap" class="d-flex flex-column mb-4 mt-2">
+    <div id="wrap" class="d-flex flex-column mb-4 mt-2 w-100">
         <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
             <div class="row d-flex flex-column mx-3 my-2">
                 <div class="col d-flex">
@@ -410,10 +410,13 @@ export default {
 
             </table>
         </div>
-        <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-            @page-changed="handlePageChanged" class="mx-auto mb-n5 page"></pagination>
-        <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-            class="mx-auto mb-n5 page"></pagination>
+
+        <div class="outSide">
+            <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
+                @page-changed="handlePageChanged" class="mx-auto mb-n5 page"></pagination>
+            <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
+                class="mx-auto mb-n5 page"></pagination>
+        </div>
 
     </div>
 </template>
@@ -422,18 +425,34 @@ export default {
     text-align: center;
 }
 
-.page {
-    margin-top: 200px;
 
+
+.outSide {
+    position: relative;
+    left: 15%;
+    top: 5%;
+    width: 70%;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-x: auto;
+
+    .page {
+        // margin-top: 200px;
+
+    }
 }
 
 .Result {
+    height: 40%;
     justify-content: space-around;
     text-align: center;
     overflow: auto;
-    margin-bottom: -200px;
+    margin-top: 10px;
+    // margin-bottom: -200px;
     padding-top: 5px;
-    margin-top: 5px;
+
     /* 自定義高度，根據需要調整 */
 }
 

@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     getUrl(mainId) {
-      return '/category/update/' + mainId;
+      return '/maincategory/update/' + mainId;
     },
     sendData(property) {
       this.$emit('getTarget', property);

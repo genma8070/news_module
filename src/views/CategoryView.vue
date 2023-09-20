@@ -44,7 +44,7 @@ export default {
             } else {
                 this.deleteId.push(value.newsId)
             }
-            // console.log(this.deleteId)
+            console.log(this.deleteId)
         },
         subMove(subI) {
             if (subI == "") {
@@ -59,6 +59,33 @@ export default {
                 }
                 return
             });
+        },
+        deleteNews() {
+            let body = {
+                "list": this.deleteId
+            }
+            fetch("http://localhost:8080/delete_news", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body)
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.messageType) {
+                        window.alert(data.message);
+                        this.deleteId = [];
+                    }
+                    if (!data.messageType) {
+                        window.alert(data.message);
+                    } this.find();
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
         },
         getMain() {
             fetch("http://localhost:8080/find_mainC", {
@@ -164,6 +191,11 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
+                    if (data.message != null) {
+                        if (!data.messageType) {
+                            window.alert(data.message);
+                        }
+                    }
                     // console.log(data)
                     this.contentCount = data.list.length
                     fetch("http://localhost:8080/find_all_news", {
@@ -365,7 +397,8 @@ export default {
                 <div class="col">
                     <div class="d-flex mb-2">
                         <h4>父分類:</h4>
-                        <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
+                        <select v-model="mainI" title="main" @change="mainMove" style="height: 25px;" class="ms-2"
+                            name="main" id="">
                             <option value="" selected>--請選擇父分類--</option>
                             <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
                             </option>
@@ -377,7 +410,7 @@ export default {
                     <div class="d-flex">
                         <h4>子分類:</h4>
                         <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub"
-                            id="sub">
+                            id="sub" title="sub">
                             <option value="" selected id="sub">--請選擇子分類--</option>
                             <option v-for="subData in subC" :value="subData.subId" id="sub">{{ subData.subCategoryName }}({{
                                 subData.news
@@ -402,10 +435,17 @@ export default {
                 </select>
             </div>
         </div>
+        <div class="d-flex justify-content-between mt-2 me-3">
+            <div></div>
+            <div class="me-3">
+                <button class="btn btn-dark" @click="deleteNews">刪除新聞</button>
+            </div>
+        </div>
         <div class="Result">
             <table class="table table-danger table-striped table-bordered border border-danger">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>No.</th>
                         <th>分類1</th> <!-- 空白列 -->
                         <th>分類2</th>
@@ -424,11 +464,12 @@ export default {
 
             </table>
         </div>
-        <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-            @page-changed="handlePageChanged" class="mx-auto mb-n5 page"></pagination>
-        <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-            class="mx-auto mb-n5 page"></pagination>
-
+        <div class="outSide">
+            <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
+                @page-changed="handlePageChanged" class="mx-auto mb-n5 page"></pagination>
+            <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
+                class="mx-auto mb-n5 page"></pagination>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -436,18 +477,32 @@ export default {
     text-align: center;
 }
 
-.page {
-    margin-top: 200px;
+.outSide {
+    position: relative;
+    left: 15%;
+    top: 55%;
+    width: 70%;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-x: auto;
 
+    .page {
+        // margin-top: 200px;
+
+    }
 }
 
 .Result {
+    height: 30%;
     justify-content: space-around;
     text-align: center;
     overflow: auto;
+    margin-top: 10px;
     margin-bottom: -200px;
     padding-top: 5px;
-    margin-top: 5px;
+
     /* 自定義高度，根據需要調整 */
 }
 
@@ -477,5 +532,4 @@ export default {
     /* 按下特效 */
     box-shadow: none;
     /* 按下时移除阴影 */
-}
-</style>
+}</style>

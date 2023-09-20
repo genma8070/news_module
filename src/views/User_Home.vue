@@ -119,9 +119,11 @@ export default {
 
             </table>
         </div>
-        <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChanged"
-            class="mx-auto mb-n5 page"></pagination>
-
+        
+        <div class="outSide">
+            <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChanged"
+                class="mx-auto mb-n5 page"></pagination>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -129,9 +131,34 @@ export default {
     text-align: center;
 }
 
-.page {
-    margin-top: 200px;
+.outSide {
+    position: relative;
+    left: 15%;
+    top: 55%;
+    width: 70%;
+    height: 15%;
+    // justify-content: center;
+    // align-items: center;
+    // text-align: center;
+    overflow-x: auto;
 
+    .page {
+        // margin-top: 200px;
+
+    }
+}
+
+
+.Result {
+    height: 80%;
+    justify-content: space-around;
+    text-align: center;
+    overflow: auto;
+    margin-top: 10px;
+    margin-bottom: -200px;
+    padding-top: 5px;
+
+    /* 自定義高度，根據需要調整 */
 }
 
 .float-btn {
@@ -160,16 +187,5 @@ export default {
     /* 按下特效 */
     box-shadow: none;
     /* 按下时移除阴影 */
-}
-
-.Result {
-    justify-content: space-around;
-    text-align: center;
-    overflow: auto;
-    margin-top: 10px;
-    margin-bottom: -200px;
-    padding-top: 5px;
-
-    /* 自定義高度，根據需要調整 */
 }
 </style>

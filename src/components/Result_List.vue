@@ -51,6 +51,7 @@ export default {
 
 <template>
   <tr class="fw-bold">
+    <td><input type="checkbox" name="news" @change="sendData(property)" :value="property"></td>
     <td>{{ index + 1 + (page - 1) * 10  }}</td>
     <td>{{ property.mainCategoryName }}</td>
     <td>{{ property.subCategoryName }}</td>

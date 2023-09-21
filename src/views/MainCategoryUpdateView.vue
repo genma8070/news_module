@@ -91,14 +91,14 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <div class="d-flex justify-content-around mt-3">
-            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
-            <h1 class="mx-n5 ms-5">編輯主分類</h1>
+            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="キャンセル">
+            <h1 class="mx-n5 ms-5">メインカテゴリ更新</h1>
             <p class="mx-2"></p>
         </div>
         <div class="d-flex mt-5 mx-5 border border-dark border-2 justify-content-center">
             <div class="row d-flex flex-column mx-3 my-2">
                 <div class="col d-flex">
-                    <h4>分類標題:</h4>
+                    <h4>カテゴリ名称:</h4>
                     <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
                 </div>
             </div>

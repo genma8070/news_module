@@ -231,10 +231,10 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <div class="d-flex justify-content-around mt-2">
-            <a href="/" class="btn btn-outline-info fw-bold me-3 mb-5 mt-4">上一頁</a>
+            <a href="/" class="btn btn-outline-info fw-bold me-3 mb-5 mt-4">前のページ</a>
             <!-- <h1 class="text-center ms-n5">{{ data.title }}</h1> -->
             <div class="d-flex flex-column text-center me-4 ms-n5">
-                <span class="h1">新增最新消息</span>
+                <span class="h1">ニュース追加</span>
 
             </div>
             <div class="ml-5 me-5"></div>
@@ -243,40 +243,40 @@ export default {
         <div class="d-flex mx-5 border border-dark border-2 justify-content-center">
             <div class="row d-flex flex-column pt-2 mx-3 my-2">
                 <div class="col d-flex">
-                    <h4>新聞標題:</h4>
+                    <h4>ニュースタイトル:</h4>
                     <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
                 </div>
                 <div class="col d-flex">
-                    <h4>副標題:</h4>
+                    <h4>サブタイトル:</h4>
                     <input v-model="subTitle" style="height: 25px; width: 338px;" class="ms-2" type="text">
                 </div>
                 <div class="col d-flex">
-                    <h4>新聞內容:</h4>
-                    <textarea id="userInput" @keyup="wordsTotal" v-model="text" style="height: 150px; width: 338px;"
+                    <h4>本文:</h4>
+                    <textarea id="userInput" @keyup="wordsTotal" v-model="text" style="height: 150px; width: 570px;"
                         class="mb-1 ms-2"></textarea>
                 </div>
-                <div class="text-center mb-1">字數統計：<span id="display">0</span><span>/500</span></div>
+                <div class="text-center mb-1">文字数：<span id="display">0</span><span>/500</span></div>
 
                 <div class="col d-flex">
-                    <h4>父分類:</h4>
+                    <h4>メインカテゴリ:</h4>
                     <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
-                        <option value="" selected>--請選擇父分類--</option>
+                        <option value="" selected>--メインカテゴリ--</option>
                         <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}</option>
                     </select>
-                    <h4 class="ms-1">子分類:</h4>
+                    <h4 class="ms-1">サブカテゴリ:</h4>
                     <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
-                        <option value="" selected>--請選擇子分類--</option>
+                        <option value="" selected>--サブカテゴリ--</option>
                         <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}</option>
                     </select>
                 </div>
                 <div class="col d-flex">
-                    <h4>預定開放時間(預設現在): </h4>
+                    <h4>発表日時（デフォルト：今）: </h4>
                     <input type="datetime-local" v-model="openDate" v-on:change="p" class="ms-2 mt-1" style="height: 25px;"
                         name="open" id="open">
                 </div>
             </div>
             <div class="mt-5 ms-5 me-n3">
-                <a @click="addPerview" class="ms-5 me-n5 mt-4 align-middle btn btn-dark">新增</a>
+                <a @click="addPerview" class="ms-5 me-n5 mt-4 align-middle btn btn-dark">追加</a>
             </div>
         </div>
 

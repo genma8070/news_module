@@ -13,7 +13,7 @@ export default {
       ed: 0,
       nd: 0,
       time: "",
-      name:""
+      name: ""
 
     };
   },
@@ -31,8 +31,8 @@ export default {
       this.$emit('getSubTarget', property2);
       // console.log(property)
     },
-   
-  
+
+
   },
   mounted() {
   }
@@ -41,7 +41,8 @@ export default {
 
 <template>
   <tr class="fw-bold">
-    <td v-if="property2.news == 0"><input type="checkbox" name="news" @change="sendSubData(property2)" :value="property2"></td>
+    <td v-if="property2.news == 0"><input type="checkbox" name="news" @change="sendSubData(property2)" :value="property2">
+    </td>
     <td v-else></td>
     <td>{{ index + 1 }}</td>
     <td>{{ property2.subCategoryName }}({{ property2.news }})</td>

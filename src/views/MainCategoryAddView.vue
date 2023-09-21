@@ -126,24 +126,23 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
         <div class="d-flex justify-content-around">
-            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
-            <h1 class="mx-n5 ms-5">新增分類</h1>
-            <p class="mx-2"></p>
+            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="前のページ">
+            <h1 class="mx-n5 ms-5">メインカテゴリ追加</h1>
+            <p class="mx-5"></p>
         </div>
 
         <div class="d-flex flex-column mt-5 mx-5 border border-dark border-2 justify-content-center">
-            <h1 class="text-center mt-2">新增主分類</h1>
             <div class="d-flex justify-content-center">
                 <div class="row d-flex mt-4 me-2">
 
                     <div class="col d-flex">
-                        <label for="main" class="h5">主分類名稱: </label>
+                        <label for="main" class="h5">名称: </label>
                         <input v-model="mainName" type="text" id="main" class="ms-2" style="height: 25px;">
 
                     </div>
                 </div>
                 <div class="mt-5">
-                    <a @click="addMain" class=" mb-3 mt-n3 ms-3 btn btn-dark">新增</a>
+                    <a @click="addMain" class=" mb-3 mt-n3 ms-3 btn btn-dark">追加</a>
                 </div>
             </div>
         </div>

@@ -387,7 +387,7 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
         <div class="d-flex justify-content-between">
-            <div><input type="button" @click="backToLsit" class="btn btn-outline-info ms-5 my-2" value="回上一頁">
+            <div><input type="button" @click="backToLsit" class="btn btn-outline-info ms-5 my-2" value="前のページ">
             </div>
             <div></div>
         </div>
@@ -396,28 +396,28 @@ export default {
             <div class="row d-flex flex-column mt-3 me-2">
                 <div class="col">
                     <div class="d-flex mb-2">
-                        <h4>父分類:</h4>
+                        <h4>メインカテゴリ:</h4>
                         <select v-model="mainI" title="main" @change="mainMove" style="height: 25px;" class="ms-2"
                             name="main" id="">
-                            <option value="" selected>--請選擇父分類--</option>
+                            <option value="" selected>--メインカテゴリ--</option>
                             <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
                             </option>
                         </select>
                         <div class="mt-2">
-                            <a @click="managementMainCategory" class=" mb-1 mt-n3 ms-3 btn btn-dark">管理主分類</a>
+                            <a @click="managementMainCategory" class=" mb-1 mt-n3 ms-3 btn btn-dark">メインカテゴリ管理</a>
                         </div>
                     </div>
                     <div class="d-flex">
-                        <h4>子分類:</h4>
+                        <h4>サブカテゴリ:</h4>
                         <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub"
                             id="sub" title="sub">
-                            <option value="" selected id="sub">--請選擇子分類--</option>
+                            <option value="" selected id="sub">--サブカテゴリ--</option>
                             <option v-for="subData in subC" :value="subData.subId" id="sub">{{ subData.subCategoryName }}({{
                                 subData.news
                             }})</option>
                         </select>
                         <div class="mt-2">
-                            <a @click="managementSubCategory" class=" mb-1 mt-n3 ms-3 btn btn-dark">管理子分類</a>
+                            <a @click="managementSubCategory" class=" mb-1 mt-n3 ms-3 btn btn-dark">サブカテゴリ管理</a>
                         </div>
                     </div>
                 </div>
@@ -438,7 +438,7 @@ export default {
         <div class="d-flex justify-content-between mt-2 me-3">
             <div></div>
             <div class="me-3">
-                <button class="btn btn-dark" @click="deleteNews">刪除新聞</button>
+                <button class="btn btn-dark" @click="deleteNews">ニュース削除</button>
             </div>
         </div>
         <div class="Result">
@@ -447,10 +447,10 @@ export default {
                     <tr>
                         <th></th>
                         <th>No.</th>
-                        <th>分類1</th> <!-- 空白列 -->
-                        <th>分類2</th>
-                        <th>標題</th>
-                        <th>發布時間</th>
+                        <th>メインカテゴリ</th> <!-- 空白列 -->
+                        <th>サブカテゴリ</th>
+                        <th>タイトル</th>
+                        <th>発表日時</th>
                         <th>狀態</th>
                         <th></th>
                     </tr>
@@ -532,4 +532,5 @@ export default {
     /* 按下特效 */
     box-shadow: none;
     /* 按下时移除阴影 */
-}</style>
+}
+</style>

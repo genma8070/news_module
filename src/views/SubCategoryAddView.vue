@@ -121,31 +121,30 @@ export default {
 <template>
     <div id="wrap" class="d-flex flex-column mb-4 mt-2">
         <div class="d-flex justify-content-around">
-            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
-            <h1 class="mx-n5 ms-5">新增分類</h1>
+            <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="前のページ">
+            <h1 class="mx-n5 ms-5">サブカテゴリ追加</h1>
             <p class="mx-2"></p>
         </div>
 
 
         <div class="d-flex flex-column mt-5 mx-5 border border-dark border-2 justify-content-center">
-            <h1 class="text-center mt-2">新增子分類</h1>
             <div class="d-flex justify-content-center">
 
                 <div class="row d-flex flex-column mt-4 me-2">
 
                     <select @change="p" v-model="mainI" style="height: 25px; width: 300;" class="ms-2" name="main" id="">
-                        <option value="" selected>--請選擇父分類--</option>
+                        <option value="" selected>--所属するメインカテゴリ--</option>
                         <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
                         </option>
                     </select>
                     <div class="col d-flex my-3">
-                        <label for="sub" class="h5">子分類名稱: </label>
+                        <label for="sub" class="h5">サブカテゴリ名称: </label>
                         <input v-model="subName" type="text" id="sub" class="ms-2" style="height: 25px;">
 
                     </div>
                 </div>
                 <div class="mt-5">
-                    <a @click="addSub" class="mt-4 ms-3 btn btn-dark">新增</a>
+                    <a @click="addSub" class="mt-4 ms-3 btn btn-dark">追加</a>
                 </div>
             </div>
         </div>

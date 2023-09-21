@@ -248,8 +248,8 @@ export default {
 
         <div class="d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-around">
-                <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
-                <h1 class="mx-n5 ms-5">管理主分類</h1>
+                <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="前のページ">
+                <h1 class="mx-n5 ms-5">メインカテゴリ管理</h1>
                 <p class="mx-2"></p>
             </div>
 
@@ -260,9 +260,9 @@ export default {
                     <div class="mt-3 me-n5 ms-5">
                     </div>
                     <div class="d-flex flex-column">
-                        <a @click="addMainCategory" class="mb-1 btn btn-dark">新增主分類</a>
+                        <a @click="addMainCategory" class="mb-1 btn btn-dark">カテゴリ追加</a>
 
-                        <input type="button" @click="deleteMain" class="btn btn-dark" value="刪除主分類">
+                        <input type="button" @click="deleteMain" class="btn btn-dark" value="カテゴリ削除">
                     </div>
                 </div>
             </div>
@@ -271,9 +271,9 @@ export default {
                 <table class="table table-danger table-striped table-bordered border border-danger h-50">
                     <thead>
                         <tr>
-                            <th>可否刪除</th>
+                            <th>削除可否</th>
                             <th>No.</th>
-                            <th>主分類</th>
+                            <th>メインカテゴリ</th>
                             <th></th>
                         </tr>
                     </thead>

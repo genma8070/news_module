@@ -1,6 +1,6 @@
 <script>
 import Pagination from '../components/Pagination.vue';
-import Result from '../components/Result_Front.vue';
+import Result from '../components/Result_User.vue';
 export default {
     components: {
         Pagination,
@@ -47,7 +47,7 @@ export default {
                 "items": this.itemsPerPage
             }
 
-            fetch("http://localhost:8080/get_all_f", {
+            fetch("http://localhost:8080/user_get_all", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export default {
                     }
                     // console.log(data)
                     this.contentCount = data.list.length
-                    fetch("http://localhost:8080/find_all_news_f", {
+                    fetch("http://localhost:8080/user_find_all_news", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -104,10 +104,10 @@ export default {
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>分類1</th> <!-- 空白列 -->
-                        <th>分類2</th>
-                        <th>標題</th>
-                        <th>發布日期</th>
+                        <th>メインカテゴリ</th> <!-- 空白列 -->
+                        <th>サブカテゴリ</th>
+                        <th>タイトル</th>
+                        <th>発表日時</th>
                     </tr>
                 </thead>
 
@@ -119,7 +119,7 @@ export default {
 
             </table>
         </div>
-        
+
         <div class="outSide">
             <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChanged"
                 class="mx-auto mb-n5 page"></pagination>

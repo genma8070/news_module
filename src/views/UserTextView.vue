@@ -68,7 +68,7 @@ export default {
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <HeaderView></HeaderView>
         <div class="d-flex justify-content-around mt-2">
-            <a href="/user_home" class="btn btn-secondary fw-bold me-3 mb-5 mt-4">上一頁</a>
+            <a href="/user_home" class="btn btn-secondary fw-bold me-3 mb-5 mt-4">前のページ</a>
             <!-- <h1 class="text-center ms-n5">{{ data.title }}</h1> -->
             <div class="d-flex flex-column text-center me-4 ms-n5">
                 <span class="h1">{{ data.title }}</span>
@@ -81,8 +81,8 @@ export default {
 
             </div>
             <div class="me-5 d-flex ">
-                <p> 主分類: {{ data.mainCategoryName }}</p>
-                <p class="ms-3"> 副分類: {{ data.subCategoryName }}</p>
+                <p> メインカテゴリ: {{ data.mainCategoryName }}</p>
+                <p class="ms-3"> サブカテゴリ: {{ data.subCategoryName }}</p>
             </div>
         </div>
         <div class="d-flex justify-content-between my-n2 mb-n3 h5">
@@ -90,7 +90,7 @@ export default {
 
             </div>
             <div class="me-5">
-                <p> 開放時間: {{ time }}</p>
+                <p> 発表日時: {{ time }}</p>
             </div>
         </div>
 

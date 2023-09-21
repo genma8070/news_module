@@ -331,24 +331,24 @@ export default {
         <div class="d-flex mt-1 mx-5 border border-dark border-2 justify-content-center">
             <div class="row d-flex flex-column mx-3 my-2">
                 <div class="col d-flex">
-                    <h4>標題關鍵字:</h4>
+                    <h4>タイトルキーワード:</h4>
                     <input v-model="title" style="height: 25px; width: 338px;" class="ms-2" type="text">
                 </div>
                 <div class="col d-flex">
-                    <h4>發布日期區間:</h4>
+                    <h4>日時区間:</h4>
                     <input v-model="startTime" style="height: 25px;" class="ms-2" type="datetime-local" name="" id="">
                     <input v-model="endTime" style="height: 25px;" class="ms-2" type="datetime-local" name="" id="">
                 </div>
                 <div class="col d-flex">
-                    <h4>父分類:</h4>
+                    <h4>メインカテゴリ:</h4>
                     <select v-model="mainI" @change="mainMove" style="height: 25px;" class="ms-2" name="main" id="">
-                        <option value="" selected>--請選擇父分類--</option>
+                        <option value="" selected>--メインカテゴリ--</option>
                         <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news }})
                         </option>
                     </select>
-                    <h4 class="ms-1">子分類:</h4>
+                    <h4 class="ms-1">サブカテゴリ:</h4>
                     <select @change="subMove(subI)" v-model="subI" style="height: 25px;" class="ms-2" name="sub" id="">
-                        <option value="" selected>--請選擇子分類--</option>
+                        <option value="" selected>--サブカテゴリ--</option>
                         <option v-for="subData in subC" :value="subData.subId">{{ subData.subCategoryName }}({{ subData.news
                         }})
                         </option>
@@ -356,7 +356,7 @@ export default {
                 </div>
             </div>
             <div class="mt-5">
-                <button class="float-btn" @click="goSearch" type="button">查詢</button>
+                <button class="float-btn" @click="goSearch" type="button">検索</button>
             </div>
         </div>
         <div class="d-flex justify-content-between">
@@ -379,12 +379,12 @@ export default {
         </div>
         <div class="d-flex justify-content-between">
             <div class="mt-2">
-                <button @click="openNews" class="ms-5" type="button">開放新聞</button>
-                <button @click="hideNews" class="ms-5" type="button">隱藏新聞</button>
+                <button @click="openNews" class="ms-5" type="button">ニュース開放</button>
+                <button @click="hideNews" class="ms-5" type="button">ニュース隠蔽</button>
             </div>
             <div class="mt-2 me-5">
-                <button @click="add" class="ms-5" type="button">新增新聞</button>
-                <button @click="category" class="ms-5" type="button">管理分類</button>
+                <button @click="add" class="ms-5" type="button">ニュース追加</button>
+                <button @click="category" class="ms-5" type="button">カテゴリ管理</button>
             </div>
         </div>
         <div class="Result">
@@ -393,10 +393,10 @@ export default {
                     <tr>
                         <th></th>
                         <th>No.</th>
-                        <th>分類1</th> <!-- 空白列 -->
-                        <th>分類2</th>
-                        <th>標題</th>
-                        <th>發布時間</th>
+                        <th>メインカテゴリ</th> <!-- 空白列 -->
+                        <th>サブカテゴリ</th>
+                        <th>タイトル</th>
+                        <th>発表日時</th>
                         <th>狀態</th>
                         <th></th>
                     </tr>

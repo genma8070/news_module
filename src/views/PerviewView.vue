@@ -150,23 +150,24 @@ export default {
     <div id="wrap" class="d-flex flex-column mb-4 ">
         <HeaderView></HeaderView>
         <div class="d-flex justify-content-around mt-2">
-            <a v-if="this.$route.params.Id != 0" @click="backToUpdate" class="btn btn-secondary fw-bold mb-4">返回</a>
-            <a v-else @click="backToAdd" class="btn btn-secondary fw-bold mb-4">返回</a>
-            <h1 class="text-center">{{ data.title }}</h1>
-            <input v-if="this.$route.params.Id != 0" type="button" value="送出" class="btn  btn-secondary fw-bold mb-4"
+            <a v-if="this.$route.params.Id != 0" @click="backToUpdate" class="btn btn-secondary fw-bold mb-4">キャンセル</a>
+            <a v-else @click="backToAdd" class="btn btn-secondary fw-bold mb-4">キャンセル</a>
+            <h1 class="text-center">プレビューページ</h1>
+            <input v-if="this.$route.params.Id != 0" type="button" value="更新" class="btn  btn-secondary fw-bold mb-4"
                 @click="update">
-            <input v-else type="button" value="送出" class="btn  btn-secondary fw-bold mb-4" @click="addNews">
+            <input v-else type="button" value="追加" class="btn  btn-secondary fw-bold mb-4" @click="addNews">
         </div>
-        <div class="d-flex justify-content-around mt-n4 mb-3">
-            <h3 class="text-center">{{ data.subTitle }}</h3>
+        <div class="d-flex flex-column justify-content-around mt-n2">
+            <h2 class="text-center">{{ data.title }}</h2>
+            <h5 class="text-center">{{ data.subTitle }}</h5>
         </div>
         <div class="d-flex justify-content-between my-n1 mt-n3 h5">
             <div class="ms-5">
 
             </div>
             <div class="me-5 d-flex ">
-                <p> 主分類: {{ data.mainCategoryName }}</p>
-                <p class="ms-3"> 副分類: {{ data.subCategoryName }}</p>
+                <p> メインカテゴリ: {{ data.mainCategoryName }}</p>
+                <p class="ms-3"> サブカテゴリ: {{ data.subCategoryName }}</p>
             </div>
         </div>
         <div class="d-flex justify-content-between my-n2 mb-n3 h5">
@@ -174,7 +175,7 @@ export default {
 
             </div>
             <div class="me-5">
-                <p> 開放時間: {{ time }}</p>
+                <p> 発表日時: {{ time }}</p>
             </div>
         </div>
 

@@ -51,9 +51,9 @@ export default {
     <td>{{ property.subCategoryName }}</td>
     <!-- <td><a :href="getUrl(property.newsId)" class="aa">{{ property.title }}</a></td> -->
     <td>
-      <div @click="getUrl(property.newsId)" class="d-flex flex-column btn">
-        <span class="h3">{{ property.title }}</span>
-        <span class="h5">{{ property.subTitle }}</span>
+      <div @click="getUrl(property.newsId)" class="d-flex flex-column btn btn-outline-danger">
+        <span class="h3 text-body">{{ property.title }}</span>
+        <span class="h5 text-body">{{ property.subTitle }}</span>
       </div>
     </td>
     <td>{{ time }}</td>

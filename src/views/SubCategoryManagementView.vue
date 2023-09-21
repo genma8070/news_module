@@ -249,8 +249,8 @@ export default {
 
         <div class="d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-around">
-                <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="回上一頁">
-                <h1 class="mx-n5 ms-5">管理子分類</h1>
+                <input type="button" @click="backToLsit" class="btn btn-outline-info mx-n5" value="前のページ">
+                <h1 class="mx-n5 ms-5">サブカテゴリ管理</h1>
                 <p class="mx-2"></p>
             </div>
 
@@ -260,15 +260,15 @@ export default {
                     <div class="mt-1 me-n5 ms-5">
                         <select @change="mainMove" v-model="mainI" style="height: 25px; width: 300;" class="h5" name="main"
                             id="">
-                            <option value="" selected>--請選擇父分類--</option>
+                            <option value="" selected>--メインカテゴリ--</option>
                             <option v-for="data in mainC" :value="data.mainId">{{ data.mainCategoryName }}({{ data.news
                             }})
                             </option>
                         </select>
                     </div>
                     <div class="d-flex flex-column">
-                        <a @click="addSubCategory" class="mb-1 btn btn-dark">新增子分類</a>
-                        <input type="button" @click="deleteSub" class="btn btn-dark" value="刪除子分類">
+                        <a @click="addSubCategory" class="mb-1 btn btn-dark">サブカテゴリ追加</a>
+                        <input type="button" @click="deleteSub" class="btn btn-dark" value="サブカテゴリ削除">
                     </div>
                 </div>
                 <div class="Result">
@@ -276,9 +276,9 @@ export default {
                     <table class="table table-danger table-striped table-bordered border border-danger">
                         <thead>
                             <tr>
-                                <th>可否刪除</th>
+                                <th>削除可否</th>
                                 <th>No.</th>
-                                <th>副分類</th>
+                                <th>サブカテゴリ</th>
                                 <th></th>
                             </tr>
                         </thead>

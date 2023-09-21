@@ -428,7 +428,7 @@ export default {
             <div></div>
             <div class="me-3">
                 <label for="items">ページごとのニュース数：</label>
-                <select @change="find" v-model="itemsPerPage" name="" id="items">
+                <select @change="goSearch" v-model="itemsPerPage" name="" id="items">
                     <option value="10" selected>10</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
@@ -459,7 +459,7 @@ export default {
                 <tbody>
                     <!-- 使用子元件並傳遞相關資料 -->
                     <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go"
-                        v-bind:key="property" v-bind:property="property" v-bind:index="index" :page="currentPage" />
+                        v-bind:key="property" v-bind:property="property" v-bind:index="index" :page="currentPage" :sort="itemsPerPage"/>
                 </tbody>
 
             </table>

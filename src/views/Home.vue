@@ -405,7 +405,7 @@ export default {
                 <tbody>
                     <!-- 使用子元件並傳遞相關資料 -->
                     <Result v-for="(property, index) in items" @getTarget="getId(property)" @goTarget="go"
-                        v-bind:key="property" v-bind:property="property" v-bind:index="index" :page="currentPage" />
+                        v-bind:key="property" v-bind:property="property" v-bind:index="index" :page="currentPage" :sort="itemsPerPage"/>
                 </tbody>
 
             </table>
@@ -429,9 +429,9 @@ export default {
 
 .outSide {
     position: relative;
-    left: 15%;
+    // left: 15%;
     top: 5%;
-    width: 70%;
+    width: 100%;
     height: 80px;
     justify-content: center;
     align-items: center;

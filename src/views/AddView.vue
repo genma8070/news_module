@@ -252,7 +252,7 @@ export default {
                 </div>
                 <div class="col d-flex">
                     <h4>本文:</h4>
-                    <textarea id="userInput" @keyup="wordsTotal" v-model="text" style="height: 150px; width: 570px;"
+                    <textarea id="userInput" @keyup="wordsTotal" v-model="text" style="height: 150px; width: 70;"
                         class="mb-1 ms-2"></textarea>
                 </div>
                 <div class="text-center mb-1">文字数：<span id="display">0</span><span>/500</span></div>

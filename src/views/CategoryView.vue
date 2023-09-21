@@ -464,12 +464,10 @@ export default {
 
             </table>
         </div>
-        <div class="outSide">
             <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-                @page-changed="handlePageChanged" class="mx-auto mb-n5 page"></pagination>
+                @page-changed="handlePageChanged" class="mx-auto mb-n5"></pagination>
             <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-                class="mx-auto mb-n5 page"></pagination>
-        </div>
+                class="mx-auto mb-n5"></pagination>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -477,22 +475,6 @@ export default {
     text-align: center;
 }
 
-.outSide {
-    position: relative;
-    left: 15%;
-    top: 55%;
-    width: 70%;
-    height: 80px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow-x: auto;
-
-    .page {
-        // margin-top: 200px;
-
-    }
-}
 
 .Result {
     height: 30%;

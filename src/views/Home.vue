@@ -427,11 +427,11 @@ export default {
 
 
 .Result {
-    height: 40%;
+    height: 45%;
     justify-content: space-around;
     text-align: center;
     overflow: auto;
-    margin-top: 10px;
+    
     // margin-bottom: -200px;
     padding-top: 5px;
 

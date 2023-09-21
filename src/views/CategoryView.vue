@@ -464,10 +464,12 @@ export default {
 
             </table>
         </div>
+        <div class="outSide">
             <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
                 @page-changed="handlePageChanged" class="mx-auto mb-n5"></pagination>
             <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
                 class="mx-auto mb-n5"></pagination>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -475,15 +477,28 @@ export default {
     text-align: center;
 }
 
+.outSide {
+    position: relative;
+    left: 15%;
+    top: 55%;
+    width: 70%;
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-x: auto;
+
+
+}
 
 .Result {
-    height: 30%;
+    height: 37%;
     justify-content: space-around;
     text-align: center;
     overflow: auto;
-    margin-top: 10px;
-    margin-bottom: -200px;
-    padding-top: 5px;
+    // margin-top: 10px;
+    margin-bottom: -215px;
+    padding-top: 3px;
 
     /* 自定義高度，根據需要調整 */
 }

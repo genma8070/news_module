@@ -120,8 +120,10 @@ export default {
             </table>
         </div>
 
+        <div class="outSide">
             <pagination :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChanged"
-                class="mx-auto mb-n5"></pagination>
+                class="mx-auto"></pagination>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -129,11 +131,23 @@ export default {
     text-align: center;
 }
 
+.outSide {
+    position: relative;
+    left: 15%;
+    
+    top: 52%;
+    width: 70%;
+    height: 15%;
+    // justify-content: center;
+    // align-items: center;
+    // text-align: center;
+    
 
+}
 
 
 .Result {
-    height: 80%;
+    height: 90%;
     justify-content: space-around;
     text-align: center;
     overflow: auto;

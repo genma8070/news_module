@@ -31,7 +31,8 @@ export default {
             deleteId: [],
             mainValue: "",
             subValue: "",
-            sort: true
+            sort: true,
+            keyForPagination:Date.now()
 
         }
     },
@@ -223,6 +224,7 @@ export default {
         },
         goSearch() {
             this.currentPage = 1;
+            this.keyForPagination = Date.now();
             this.search();
         },
         search() {
@@ -465,10 +467,11 @@ export default {
             </table>
         </div>
         <div class="outSide">
-            <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-                @page-changed="handlePageChanged" class="mx-auto mb-n5"></pagination>
-            <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-                class="mx-auto mb-n5"></pagination>
+            <pagination v-if="!isSearch" :contentCount="contentCount" :page="currentPage" :itemsPerPage="itemsPerPage"
+                @page-changed="handlePageChanged" class="mx-auto mb-n5" :key="'pagination-not-search-' + keyForPagination"></pagination>
+            <pagination v-else :contentCount="contentCount" :page="currentPage" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
+                class="mx-auto mb-n5" :key="'pagination-search-' + keyForPagination"></pagination>
+ 
         </div>
     </div>
 </template>
@@ -480,7 +483,7 @@ export default {
 .outSide {
     position: relative;
     left: 15%;
-    top: 55%;
+    top: 54%;
     width: 70%;
     height: 80px;
     justify-content: center;

@@ -30,7 +30,8 @@ export default {
             isSearch: true,
             deleteId: [],
             sort: true,
-            switcher: ''
+            switcher: '',
+            keyForPagination : Date.now()
 
         }
     },
@@ -190,6 +191,7 @@ export default {
         },
         goSearch() {
             this.currentPage = 1;
+            this.keyForPagination = Date.now();
             this.search();
         },
         search() {
@@ -220,7 +222,6 @@ export default {
                     }
                     this.isSearch = true
                     this.contentCount = data.list.length
-
                     let body = {
                         "title": this.title,
                         "startDate": this.startTime,
@@ -242,6 +243,7 @@ export default {
                             return response.json();
                         })
                         .then((data) => {
+                            // console.log(data.list)
                             this.items = data.list
                             // this.contentCount = data.list.length;
                         })
@@ -411,10 +413,10 @@ export default {
             </table>
         </div>
 
-            <pagination v-if="!isSearch" :contentCount="contentCount" :itemsPerPage="itemsPerPage"
-                @page-changed="handlePageChanged" class="mx-auto mb-n5"></pagination>
-            <pagination v-else :contentCount="contentCount" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
-                class="mx-auto mb-n5"></pagination>
+            <pagination v-if="!isSearch" :contentCount="contentCount" :page="currentPage" :itemsPerPage="itemsPerPage"
+                @page-changed="handlePageChanged" class="mx-auto mb-n5" :key="'pagination-not-search-' + keyForPagination"></pagination>
+            <pagination v-else :contentCount="contentCount" :page="currentPage" :itemsPerPage="itemsPerPage" @page-changed="handlePageChangedS"
+                class="mx-auto mb-n5" :key="'pagination-search-' + keyForPagination"></pagination>
  
     </div>
 </template>

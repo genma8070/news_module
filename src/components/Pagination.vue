@@ -63,6 +63,9 @@ export default {
       startingPage: 1
     };
   },
+  mounted(){
+    // console.log(this.pageCount)
+  },
   computed: {
     pageCount() {
       return Math.ceil(this.contentCount / this.itemsPerPage);
@@ -70,8 +73,9 @@ export default {
     displayedPages() {
       const maxDisplayedPages = 5;
       const lastPage = this.pageCount;
+      // console.log(lastPage)
       const selectedPage = this.currentPage;
-
+      // console.log(selectedPage)
       if (lastPage <= maxDisplayedPages) {
         // If total pages are less than or equal to maxDisplayedPages
         return Array.from({ length: lastPage }, (_, index) => index + 1);

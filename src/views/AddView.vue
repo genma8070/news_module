@@ -181,6 +181,7 @@ export default {
             this.session.subTitle = this.subTitle;
             this.session.mainI = this.mainI;
             this.session.subI = this.subI;
+            this.session.mainCategoryName = this.mainCategoryName;
             this.session.subCategoryName = this.subCategoryName;
             this.session.text = this.text;
             this.session.openDate = this.openDate;
